@@ -1,0 +1,16 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Project:</h2>
+F:\_DIC\4\Übungen_C51\Project_interrupts\Project_F330_interrupts_base\Project_F330_interrupts.uvproj
+Project File Date:  10/03/2014
+
+<h2>Output:</h2>
+Rebuild target 'F330'
+compiling F330_main.c...
+compiling F330_sub.c...
+compiling config.c...
+linking...
+Program Size: data=9.0 xdata=0 code=83
+"Project_F330_interrupts" - 0 Error(s), 0 Warning(s).

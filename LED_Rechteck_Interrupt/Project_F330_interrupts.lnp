@@ -1,0 +1,5 @@
+"F330_main.obj",
+"F330_sub.obj",
+"config.obj" 
+TO "Project_F330_interrupts" 
+RAMSIZE(256) 
