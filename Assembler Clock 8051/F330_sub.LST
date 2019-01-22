@@ -1,0 +1,579 @@
+A51 MACRO ASSEMBLER  F330_SUB                                                             01/21/2019 16:50:26 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02b
+OBJECT MODULE PLACED IN F330_sub.OBJ
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE F330_sub.asm NOMOD51 SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;-----------------------------------------------------------------------------
+                       2     ; template_sub.asm
+                       3     ;-----------------------------------------------------------------------------
+                       4     ; HTBLA Steyr  -  Elektronik und Technische Informatik
+                       5     ; 
+                       6     ; Author:   Felix Hutsteiner
+                       7     ; Version:  1.0
+                       8     ; 
+                       9     ; Changes:  
+                      10     ;               3.1.2014        created     
+                      11     ;
+                      12     ;
+                      13     ; Target:         C8051F330 Silicon Labs
+                      14     ; Tool chain:     Keil µVision 4 
+                      15     ;
+                      16     ; Program Description:
+                      17     ;               This program is a template for assembler subroutine modules
+                      18     ;
+                      19     
+                      20     ;------------------------------------------------------------------------------
+                      21     ; PROCESSOR definition for assembler (SFR names)
+                      22     ;------------------------------------------------------------------------------
+                      23     ;$include (C8051F330.INC) ; Remove checkbox "Define 8051 SFR names" in project options A51 
+                             !!!
+                +1    24     ;---------------------------------------------------------------------------
+                +1    25     ; 
+                +1    26     ; 
+                +1    27     ;
+                +1    28     ;
+                +1    29     ; FILE NAME: C8051F330.INC
+                +1    30     ; TARGET MCUs: C8051F330, F331
+                +1    31     ; DESCRIPTION: Register/bit definitions for the C8051F330 product family.
+                +1    32     ;
+                +1    33     ; REVISION 1.0
+                +1    34     ;
+                +1    35     ;---------------------------------------------------------------------------
+                +1    36     
+                +1    37     ;REGISTER DEFINITIONS
+                +1    38     ;
+  0080          +1    39     P0             DATA 080H    ; PORT 0 LATCH
+  0081          +1    40     SP             DATA 081H    ; STACK POINTER
+  0082          +1    41     DPL            DATA 082H    ; DATA POINTER LOW
+  0083          +1    42     DPH            DATA 083H    ; DATA POINTER HIGH
+  0087          +1    43     PCON           DATA 087H    ; POWER CONTROL
+  0088          +1    44     TCON           DATA 088H    ; TIMER/COUNTER CONTROL
+  0089          +1    45     TMOD           DATA 089H    ; TIMER/COUNTER MODE
+  008A          +1    46     TL0            DATA 08AH    ; TIMER/COUNTER 0 LOW
+  008B          +1    47     TL1            DATA 08BH    ; TIMER/COUNTER 1 LOW
+  008C          +1    48     TH0            DATA 08CH    ; TIMER/COUNTER 0 HIGH
+  008D          +1    49     TH1            DATA 08DH    ; TIMER/COUNTER 1 HIGH
+  008E          +1    50     CKCON          DATA 08EH    ; CLOCK CONTROL
+  008F          +1    51     PSCTL          DATA 08FH    ; PROGRAM STORE R/W CONTROL
+  0090          +1    52     P1             DATA 090H    ; PORT 1 LATCH
+  0091          +1    53     TMR3CN         DATA 091H    ; TIMER/COUNTER 3 CONTROL
+  0092          +1    54     TMR3RLL        DATA 092H    ; TIMER/COUNTER 3 RELOAD LOW
+  0093          +1    55     TMR3RLH        DATA 093H    ; TIMER/COUNTER 3 RELOAD HIGH
+  0094          +1    56     TMR3L          DATA 094H    ; TIMER/COUNTER 3 LOW
+  0095          +1    57     TMR3H          DATA 095H    ; TIMER/COUNTER 3 HIGH
+A51 MACRO ASSEMBLER  F330_SUB                                                             01/21/2019 16:50:26 PAGE     2
+
+  0096          +1    58     IDA0L          DATA 096H    ; CURRENT MODE DAC0 LOW
+  0097          +1    59     IDA0H          DATA 097H    ; CURRENT MODE DAC0 HIGH
+  0098          +1    60     SCON0          DATA 098H    ; UART0 CONTROL
+  0099          +1    61     SBUF0          DATA 099H    ; UART0 DATA BUFFER
+  009B          +1    62     CPT0CN         DATA 09BH    ; COMPARATOR0 CONTROL
+  009D          +1    63     CPT0MD         DATA 09DH    ; COMPARATOR0 MODE SELECTION
+  009F          +1    64     CPT0MX         DATA 09FH    ; COMPARATOR0 MUX SELECTION
+  00A0          +1    65     P2             DATA 0A0H    ; PORT 2 LATCH
+  00A1          +1    66     SPI0CFG        DATA 0A1H    ; SPI CONFIGURATION
+  00A2          +1    67     SPI0CKR        DATA 0A2H    ; SPI CLOCK RATE CONTROL
+  00A3          +1    68     SPI0DAT        DATA 0A3H    ; SPI DATA
+  00A4          +1    69     P0MDOUT        DATA 0A4H    ; PORT 0 OUTPUT MODE CONFIGURATION
+  00A5          +1    70     P1MDOUT        DATA 0A5H    ; PORT 1 OUTPUT MODE CONFIGURATION
+  00A6          +1    71     P2MDOUT        DATA 0A6H    ; PORT 2 OUTPUT MODE CONFIGURATION
+  00A8          +1    72     IE             DATA 0A8H    ; INTERRUPT ENABLE
+  00A9          +1    73     CLKSEL         DATA 0A9H    ; CLOCK SELECT
+  00AA          +1    74     EMI0CN         DATA 0AAH    ; EXTERNAL MEMORY INTERFACE CONTROL
+  00B1          +1    75     OSCXCN         DATA 0B1H    ; EXTERNAL OSCILLATOR CONTROL
+  00B2          +1    76     OSCICN         DATA 0B2H    ; INTERNAL OSCILLATOR CONTROL
+  00B3          +1    77     OSCICL         DATA 0B3H    ; INTERNAL OSCILLATOR CALIBRATION
+  00B6          +1    78     FLSCL          DATA 0B6H    ; FLASH SCALE
+  00B7          +1    79     FLKEY          DATA 0B7H    ; FLASH LOCK AND KEY
+  00B8          +1    80     IP             DATA 0B8H    ; INTERRUPT PRIORITY
+  00B9          +1    81     IDA0CN         DATA 0B9H    ; CURRENT MODE DAC0 CONTROL
+  00BA          +1    82     AMX0N          DATA 0BAH    ; AMUX0 NEGATIVE CHANNEL SELECT
+  00BB          +1    83     AMX0P          DATA 0BBH    ; AMUX0 POSITIVE CHANNEL SELECT
+  00BC          +1    84     ADC0CF         DATA 0BCH    ; ADC0 CONFIGURATION
+  00BD          +1    85     ADC0L          DATA 0BDH    ; ADC0 LOW
+  00BE          +1    86     ADC0H          DATA 0BEH    ; ADC0 HIGH
+  00C0          +1    87     SMB0CN         DATA 0C0H    ; SMBUS CONTROL
+  00C1          +1    88     SMB0CF         DATA 0C1H    ; SMBUS CONFIGURATION
+  00C2          +1    89     SMB0DAT        DATA 0C2H    ; SMBUS DATA
+  00C3          +1    90     ADC0GTL        DATA 0C3H    ; ADC0 GREATER-THAN COMPARE LOW
+  00C4          +1    91     ADC0GTH        DATA 0C4H    ; ADC0 GREATER-THAN COMPARE HIGH
+  00C5          +1    92     ADC0LTL        DATA 0C5H    ; ADC0 LESS-THAN COMPARE WORD LOW
+  00C6          +1    93     ADC0LTH        DATA 0C6H    ; ADC0 LESS-THAN COMPARE WORD HIGH
+  00C8          +1    94     TMR2CN         DATA 0C8H    ; TIMER/COUNTER 2 CONTROL
+  00CA          +1    95     TMR2RLL        DATA 0CAH    ; TIMER/COUNTER 2 RELOAD LOW
+  00CB          +1    96     TMR2RLH        DATA 0CBH    ; TIMER/COUNTER 2 RELOAD HIGH
+  00CC          +1    97     TMR2L          DATA 0CCH    ; TIMER/COUNTER 2 LOW
+  00CD          +1    98     TMR2H          DATA 0CDH    ; TIMER/COUNTER 2 HIGH
+  00D0          +1    99     PSW            DATA 0D0H    ; PROGRAM STATUS WORD
+  00D1          +1   100     REF0CN         DATA 0D1H    ; VOLTAGE REFERENCE CONTROL
+  00D4          +1   101     P0SKIP         DATA 0D4H    ; PORT 0 SKIP
+  00D5          +1   102     P1SKIP         DATA 0D5H    ; PORT 1 SKIP
+  00D8          +1   103     PCA0CN         DATA 0D8H    ; PCA CONTROL
+  00D9          +1   104     PCA0MD         DATA 0D9H    ; PCA MODE
+  00DA          +1   105     PCA0CPM0       DATA 0DAH    ; PCA MODULE 0 MODE REGISTER
+  00DB          +1   106     PCA0CPM1       DATA 0DBH    ; PCA MODULE 1 MODE REGISTER
+  00DC          +1   107     PCA0CPM2       DATA 0DCH    ; PCA MODULE 2 MODE REGISTER
+  00E0          +1   108     ACC            DATA 0E0H    ; ACCUMULATOR
+  00E1          +1   109     XBR0           DATA 0E1H    ; PORT I/O CROSSBAR CONTROL 0
+  00E2          +1   110     XBR1           DATA 0E2H    ; PORT I/O CROSSBAR CONTROL 1
+  00E3          +1   111     OSCLCN         DATA 0E3H    ; LOW-FREQUENCY OSCILLATOR CONTROL
+  00E4          +1   112     IT01CF         DATA 0E4H    ; INT0/INT1 CONFIGURATION
+  00E6          +1   113     EIE1           DATA 0E6H    ; EXTENDED INTERRUPT ENABLE 1
+  00E8          +1   114     ADC0CN         DATA 0E8H    ; ADC0 CONTROL
+  00E9          +1   115     PCA0CPL1       DATA 0E9H    ; PCA CAPTURE 1 LOW
+  00EA          +1   116     PCA0CPH1       DATA 0EAH    ; PCA CAPTURE 1 HIGH
+  00EB          +1   117     PCA0CPL2       DATA 0EBH    ; PCA CAPTURE 2 LOW
+  00EC          +1   118     PCA0CPH2       DATA 0ECH    ; PCA CAPTURE 2 HIGH
+  00EF          +1   119     RSTSRC         DATA 0EFH    ; RESET SOURCE CONFIGURATION/STATUS
+  00F0          +1   120     B              DATA 0F0H    ; B REGISTER
+  00F1          +1   121     P0MDIN         DATA 0F1H    ; PORT 0 INPUT MODE CONFIGURATION
+  00F2          +1   122     P1MDIN         DATA 0F2H    ; PORT 1 INPUT MODE CONFIGURATION
+  00F6          +1   123     EIP1           DATA 0F6H    ; EXTENDED INTERRUPT PRIORITY 1
+A51 MACRO ASSEMBLER  F330_SUB                                                             01/21/2019 16:50:26 PAGE     3
+
+  00F8          +1   124     SPI0CN         DATA 0F8H    ; SPI CONTROL
+  00F9          +1   125     PCA0L          DATA 0F9H    ; PCA COUNTER LOW
+  00FA          +1   126     PCA0H          DATA 0FAH    ; PCA COUNTER HIGH
+  00FB          +1   127     PCA0CPL0       DATA 0FBH    ; PCA CAPTURE 0 LOW
+  00FC          +1   128     PCA0CPH0       DATA 0FCH    ; PCA CAPTURE 0 HIGH
+  00FF          +1   129     VDM0CN         DATA 0FFH    ; VDD MONITOR CONTROL
+                +1   130     
+                +1   131     ;
+                +1   132     ;------------------------------------------------------------------------------
+                +1   133     ;BIT DEFINITIONS
+                +1   134     ;
+                +1   135     ; TCON 088H
+  008F          +1   136     TF1            BIT 08FH     ; TIMER 1 OVERFLOW FLAG
+  008E          +1   137     TR1            BIT 08EH     ; TIMER 1 ON/OFF CONTROL
+  008D          +1   138     TF0            BIT 08DH     ; TIMER 0 OVERFLOW FLAG
+  008C          +1   139     TR0            BIT 08CH     ; TIMER 0 ON/OFF CONTROL
+  008B          +1   140     IE1            BIT 08BH     ; EXT. INTERRUPT 1 EDGE FLAG
+  008A          +1   141     IT1            BIT 08AH     ; EXT. INTERRUPT 1 TYPE
+  0089          +1   142     IE0            BIT 089H     ; EXT. INTERRUPT 0 EDGE FLAG
+  0088          +1   143     IT0            BIT 088H     ; EXT. INTERRUPT 0 TYPE
+                +1   144     
+                +1   145     ; SCON0 098H
+  009F          +1   146     S0MODE         BIT 09FH     ; UART 0 MODE
+  009D          +1   147     MCE0           BIT 09DH     ; UART 0 MCE
+  009C          +1   148     REN0           BIT 09CH     ; UART 0 RX ENABLE
+  009B          +1   149     TB80           BIT 09BH     ; UART 0 TX BIT 8
+  009A          +1   150     RB80           BIT 09AH     ; UART 0 RX BIT 8
+  0099          +1   151     TI0            BIT 099H     ; UART 0 TX INTERRUPT FLAG
+  0098          +1   152     RI0            BIT 098H     ; UART 0 RX INTERRUPT FLAG
+                +1   153     
+                +1   154     ; IE 0A8H
+  00AF          +1   155     EA             BIT 0AFH     ; GLOBAL INTERRUPT ENABLE
+  00AE          +1   156     ESPI0          BIT 0AEH     ; SPI0 INTERRUPT ENABLE
+  00AD          +1   157     ET2            BIT 0ADH     ; TIMER 2 INTERRUPT ENABLE
+  00AC          +1   158     ES0            BIT 0ACH     ; UART0 INTERRUPT ENABLE
+  00AB          +1   159     ET1            BIT 0ABH     ; TIMER 1 INTERRUPT ENABLE
+  00AA          +1   160     EX1            BIT 0AAH     ; EXTERNAL INTERRUPT 1 ENABLE
+  00A9          +1   161     ET0            BIT 0A9H     ; TIMER 0 INTERRUPT ENABLE
+  00A8          +1   162     EX0            BIT 0A8H     ; EXTERNAL INTERRUPT 0 ENABLE
+                +1   163     
+                +1   164     ; IP 0B8H
+  00BE          +1   165     PSPI0          BIT 0BEH     ; SPI0 PRIORITY
+  00BD          +1   166     PT2            BIT 0BDH     ; TIMER 2 PRIORITY
+  00BC          +1   167     PS0            BIT 0BCH     ; UART0 PRIORITY
+  00BB          +1   168     PT1            BIT 0BBH     ; TIMER 1 PRIORITY
+  00BA          +1   169     PX1            BIT 0BAH     ; EXTERNAL INTERRUPT 1 PRIORITY
+  00B9          +1   170     PT0            BIT 0B9H     ; TIMER 0 PRIORITY
+  00B8          +1   171     PX0            BIT 0B8H     ; EXTERNAL INTERRUPT 0 PRIORITY
+                +1   172     
+                +1   173     ; SMB0CN 0C0H
+  00C7          +1   174     MASTER         BIT 0C7H     ; SMBUS 0 MASTER/SLAVE
+  00C6          +1   175     TXMODE         BIT 0C6H     ; SMBUS 0 TRANSMIT MODE
+  00C5          +1   176     STA            BIT 0C5H     ; SMBUS 0 START FLAG
+  00C4          +1   177     STO            BIT 0C4H     ; SMBUS 0 STOP FLAG
+  00C3          +1   178     ACKRQ          BIT 0C3H     ; SMBUS 0 ACKNOWLEDGE REQUEST
+  00C2          +1   179     ARBLOST        BIT 0C2H     ; SMBUS 0 ARBITRATION LOST
+  00C1          +1   180     ACK            BIT 0C1H     ; SMBUS 0 ACKNOWLEDGE FLAG
+  00C0          +1   181     SI             BIT 0C0H     ; SMBUS 0 INTERRUPT PENDING FLAG
+                +1   182     
+                +1   183     ; TMR2CN 0C8H
+  00CF          +1   184     TF2H           BIT 0CFH     ; TIMER 2 HIGH BYTE OVERFLOW FLAG
+  00CE          +1   185     TF2L           BIT 0CEH     ; TIMER 2 LOW BYTE OVERFLOW FLAG
+  00CD          +1   186     TF2LEN         BIT 0CDH     ; TIMER 2 LOW BYTE INTERRUPT ENABLE
+  00CC          +1   187     TF2CEN         BIT 0CCH     ; TIMER 2 LFO CAPTURE ENABLE
+  00CB          +1   188     T2SPLIT        BIT 0CBH     ; TIMER 2 SPLIT MODE ENABLE
+  00CA          +1   189     TR2            BIT 0CAH     ; TIMER 2 ON/OFF CONTROL
+A51 MACRO ASSEMBLER  F330_SUB                                                             01/21/2019 16:50:26 PAGE     4
+
+  00C8          +1   190     T2XCLK         BIT 0C8H     ; TIMER 2 EXTERNAL CLOCK SELECT
+                +1   191     
+                +1   192     ; PSW 0D0H
+  00D7          +1   193     CY             BIT 0D7H     ; CARRY FLAG
+  00D6          +1   194     AC             BIT 0D6H     ; AUXILIARY CARRY FLAG
+  00D5          +1   195     F0             BIT 0D5H     ; USER FLAG 0
+  00D4          +1   196     RS1            BIT 0D4H     ; REGISTER BANK SELECT 1
+  00D3          +1   197     RS0            BIT 0D3H     ; REGISTER BANK SELECT 0
+  00D2          +1   198     OV             BIT 0D2H     ; OVERFLOW FLAG
+  00D1          +1   199     F1             BIT 0D1H     ; USER FLAG 1
+  00D0          +1   200     P              BIT 0D0H     ; ACCUMULATOR PARITY FLAG
+                +1   201     
+                +1   202     ; PCA0CN 0D8H
+  00DF          +1   203     CF             BIT 0DFH     ; PCA 0 COUNTER OVERFLOW FLAG
+  00DE          +1   204     CR             BIT 0DEH     ; PCA 0 COUNTER RUN CONTROL BIT
+  00DA          +1   205     CCF2           BIT 0DAH     ; PCA 0 MODULE 2 INTERRUPT FLAG
+  00D9          +1   206     CCF1           BIT 0D9H     ; PCA 0 MODULE 1 INTERRUPT FLAG
+  00D8          +1   207     CCF0           BIT 0D8H     ; PCA 0 MODULE 0 INTERRUPT FLAG
+                +1   208                                 ; ADC 0 WINDOW INTERRUPT FLAG
+                +1   209     ; ADC0CN 0E8H
+  00EF          +1   210     AD0EN          BIT 0EFH     ; ADC 0 ENABLE
+  00EE          +1   211     AD0TM          BIT 0EEH     ; ADC 0 TRACK MODE
+  00ED          +1   212     AD0INT         BIT 0EDH     ; ADC 0 EOC INTERRUPT FLAG
+  00EC          +1   213     AD0BUSY        BIT 0ECH     ; ADC 0 BUSY FLAG
+  00EB          +1   214     AD0WINT        BIT 0EBH     ; ADC 0 WINDOW INTERRUPT FLAG
+  00EA          +1   215     AD0CM2         BIT 0EAH     ; ADC 0 CONVERT START MODE BIT 2
+  00E9          +1   216     AD0CM1         BIT 0E9H     ; ADC 0 CONVERT START MODE BIT 1
+  00E8          +1   217     AD0CM0         BIT 0E8H     ; ADC 0 CONVERT START MODE BIT 0
+                +1   218     
+                +1   219     ; SPI0CN 0F8H
+  00FF          +1   220     SPIF           BIT 0FFH     ; SPI 0 INTERRUPT FLAG
+  00FE          +1   221     WCOL           BIT 0FEH     ; SPI 0 WRITE COLLISION FLAG
+  00FD          +1   222     MODF           BIT 0FDH     ; SPI 0 MODE FAULT FLAG
+  00FC          +1   223     RXOVRN         BIT 0FCH     ; SPI 0 RX OVERRUN FLAG
+  00FB          +1   224     NSSMD1         BIT 0FBH     ; SPI 0 SLAVE SELECT MODE 1
+  00FA          +1   225     NSSMD0         BIT 0FAH     ; SPI 0 SLAVE SELECT MODE 0
+  00F9          +1   226     TXBMT          BIT 0F9H     ; SPI 0 TX BUFFER EMPTY FLAG
+  00F8          +1   227     SPIEN          BIT 0F8H     ; SPI 0 SPI ENABLE
+                     228     
+                     229     
+                     230     ;------------------------------------------------------------------------------
+                     231     ; SYMBOL definitions, EXTRN references, PUBLIC definitions
+                     232     ;------------------------------------------------------------------------------
+                     233     public isr_T0
+                     234     public isr_UART
+                     235     
+                     236     ;------------------------------------------------------------------------------
+                     237     ; Data segments 
+                     238     ;------------------------------------------------------------------------------
+                     239     
+                     240     
+                     241     ;------------------------------------------------------------------------------
+                     242     ; CODE segments
+                     243     ;------------------------------------------------------------------------------
+                     244     SUBROUTINES     segment CODE
+                     245     
+----                 246             rseg    SUBROUTINES     ; Switch to SUBROUTINES segment
+                     247             using   0                       ; Define Symbols AR0 ... AR7.  
+                     248                                                     ; ATTENTION: Bank switching code is not gen
+                             erated
+                     249     
+                     250     ; Timerberechnung
+                     251     ; Oszillatorfrequenz = 24,5MHz
+                     252     ; 24,5MHz / 12 = 2,04MHz
+                     253     ; 2,04MHz ^= 490ns
+                     254     ; Zählschritte = alle 10ms / 490ns = 20416,66
+A51 MACRO ASSEMBLER  F330_SUB                                                             01/21/2019 16:50:26 PAGE     5
+
+                     255     ; Reloadwert = 65536 - 20416,66 = 45122
+                     256     
+                     257     
+0000                 258     isr_T0:
+                     259             
+0000 758CB0          260                     MOV TH0,#HIGH(45122)     
+0003 758A42          261                     MOV TL0,#LOW(45122)              
+                     262                     
+0006 120000   F      263                     call calc3                               
+0009 75993A          264                     MOV SBUF0,#':'                   
+000C C299            265                     clr TI0                                  
+000E 120000   F      266                     call wait                                
+                     267                     
+0011 120000   F      268                     call calc2                               
+0014 75993A          269                     MOV SBUF0,#':'                   
+0017 C299            270                     clr TI0                                  
+0019 120000   F      271                     call wait                                
+                     272                     
+001C 120000   F      273                     call calc1                               
+                     274                     
+001F 0A              275                     INC R2                                   
+0020 EA              276                     MOV A,R2
+0021 B46411          277                     CJNE A,#100, finished    
+                     278                     
+0024 0B              279                     INC R3                                   
+0025 7A00            280                     MOV R2,#0                                
+                     281                     ;----------------------------
+0027 EB              282                     MOV A,R3
+0028 BB3C0A          283                     CJNE R3,#60, finished    
+002B 0C              284                     INC R4                                   
+002C 7B00            285                     MOV R3,#0                                
+                     286                     
+                     287                     
+                     288                     ;----------------------------
+002E EC              289                     MOV A,R4
+002F BB3C03          290                     CJNE R3,#60, finished    
+0032 0D              291                     INC R5                                   
+0033 7C00            292                     MOV R4,#0                                
+                     293                     
+                     294                     
+                     295                     ;---------------
+0035                 296                     finished:                                
+0035 32              297                     reti                                     
+                     298     ;----------------------------------             
+0036                 299                     UART:                                    
+0036 F599            300                     MOV SBUF0, A                     
+0038 C299            301                     clr TI0                                  
+003A                 302                     wait:                                    
+003A 3099FD          303                     JNB TI0, wait
+003D 22              304                     ret
+                     305                     
+003E                 306                     newLine:
+003E 75990D          307                     MOV SBUF0,#13                    
+                     308                     
+0041 22              309                     ret
+                     310                     
+0042                 311                     calc1:
+0042 EB              312                     MOV A,R3                                 
+0043 75F00A          313                     MOV B,#10
+0046 84              314                     DIV AB
+0047 2430            315                     ADD A,#0x30
+0049 120000   F      316                     call UART
+004C E5F0            317                     MOV A,B
+004E 2430            318                     ADD A,#0x30
+0050 120000   F      319                     call UART
+0053 120000   F      320                     call newLine
+A51 MACRO ASSEMBLER  F330_SUB                                                             01/21/2019 16:50:26 PAGE     6
+
+0056 22              321                     ret
+                     322                     
+0057                 323                     calc2:
+0057 EC              324                     MOV A,R4
+0058 75F00A          325                     MOV B,#10
+005B 84              326                     DIV AB
+005C 2430            327                     ADD A,#0x30
+005E 120000   F      328                     call UART
+0061 E5F0            329                     MOV A,B
+0063 2430            330                     ADD A,#0x30
+0065 120000   F      331                     call UART
+0068 120000   F      332                     call newLine
+006B 22              333                     ret
+                     334                     
+006C                 335                     calc3:
+006C ED              336                     MOV A,R5
+006D 75F00A          337                     MOV B,#10
+0070 84              338                     DIV AB
+0071 2430            339                     ADD A,#0x30
+0073 120000   F      340                     call UART
+0076 E5F0            341                     MOV A,B
+0078 2430            342                     ADD A,#0x30
+007A 120000   F      343                     call UART
+007D 120000   F      344                     call newLine
+0080 22              345                     ret
+                     346                     
+0081                 347     isr_UART:                
+                     348     
+0081 309808          349                     JNB RI0, done
+0084 C298            350                     CLR RI0 
+0086 E599            351                     MOV A,SBUF0
+                     352                     
+0088 B47301          353                     CJNE A,#'s', done
+                     354                     
+008B 00              355                     nop
+                     356                     
+008C                 357                     done:
+008C C299            358                     CLR TI0
+008E 32              359                     reti
+                     360     
+                     361     ;------------------------------------------------------------------------------
+                     362     ; End of file.
+                     363     ;------------------------------------------------------------------------------
+                     364     END
+A51 MACRO ASSEMBLER  F330_SUB                                                             01/21/2019 16:50:26 PAGE     7
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+AC . . . . . . . .  B ADDR   00D0H.6 A   
+ACC. . . . . . . .  D ADDR   00E0H   A   
+ACK. . . . . . . .  B ADDR   00C0H.1 A   
+ACKRQ. . . . . . .  B ADDR   00C0H.3 A   
+AD0BUSY. . . . . .  B ADDR   00E8H.4 A   
+AD0CM0 . . . . . .  B ADDR   00E8H.0 A   
+AD0CM1 . . . . . .  B ADDR   00E8H.1 A   
+AD0CM2 . . . . . .  B ADDR   00E8H.2 A   
+AD0EN. . . . . . .  B ADDR   00E8H.7 A   
+AD0INT . . . . . .  B ADDR   00E8H.5 A   
+AD0TM. . . . . . .  B ADDR   00E8H.6 A   
+AD0WINT. . . . . .  B ADDR   00E8H.3 A   
+ADC0CF . . . . . .  D ADDR   00BCH   A   
+ADC0CN . . . . . .  D ADDR   00E8H   A   
+ADC0GTH. . . . . .  D ADDR   00C4H   A   
+ADC0GTL. . . . . .  D ADDR   00C3H   A   
+ADC0H. . . . . . .  D ADDR   00BEH   A   
+ADC0L. . . . . . .  D ADDR   00BDH   A   
+ADC0LTH. . . . . .  D ADDR   00C6H   A   
+ADC0LTL. . . . . .  D ADDR   00C5H   A   
+AMX0N. . . . . . .  D ADDR   00BAH   A   
+AMX0P. . . . . . .  D ADDR   00BBH   A   
+ARBLOST. . . . . .  B ADDR   00C0H.2 A   
+B. . . . . . . . .  D ADDR   00F0H   A   
+CALC1. . . . . . .  C ADDR   0042H   R   SEG=SUBROUTINES
+CALC2. . . . . . .  C ADDR   0057H   R   SEG=SUBROUTINES
+CALC3. . . . . . .  C ADDR   006CH   R   SEG=SUBROUTINES
+CCF0 . . . . . . .  B ADDR   00D8H.0 A   
+CCF1 . . . . . . .  B ADDR   00D8H.1 A   
+CCF2 . . . . . . .  B ADDR   00D8H.2 A   
+CF . . . . . . . .  B ADDR   00D8H.7 A   
+CKCON. . . . . . .  D ADDR   008EH   A   
+CLKSEL . . . . . .  D ADDR   00A9H   A   
+CPT0CN . . . . . .  D ADDR   009BH   A   
+CPT0MD . . . . . .  D ADDR   009DH   A   
+CPT0MX . . . . . .  D ADDR   009FH   A   
+CR . . . . . . . .  B ADDR   00D8H.6 A   
+CY . . . . . . . .  B ADDR   00D0H.7 A   
+DONE . . . . . . .  C ADDR   008CH   R   SEG=SUBROUTINES
+DPH. . . . . . . .  D ADDR   0083H   A   
+DPL. . . . . . . .  D ADDR   0082H   A   
+EA . . . . . . . .  B ADDR   00A8H.7 A   
+EIE1 . . . . . . .  D ADDR   00E6H   A   
+EIP1 . . . . . . .  D ADDR   00F6H   A   
+EMI0CN . . . . . .  D ADDR   00AAH   A   
+ES0. . . . . . . .  B ADDR   00A8H.4 A   
+ESPI0. . . . . . .  B ADDR   00A8H.6 A   
+ET0. . . . . . . .  B ADDR   00A8H.1 A   
+ET1. . . . . . . .  B ADDR   00A8H.3 A   
+ET2. . . . . . . .  B ADDR   00A8H.5 A   
+EX0. . . . . . . .  B ADDR   00A8H.0 A   
+EX1. . . . . . . .  B ADDR   00A8H.2 A   
+F0 . . . . . . . .  B ADDR   00D0H.5 A   
+F1 . . . . . . . .  B ADDR   00D0H.1 A   
+FINISHED . . . . .  C ADDR   0035H   R   SEG=SUBROUTINES
+FLKEY. . . . . . .  D ADDR   00B7H   A   
+FLSCL. . . . . . .  D ADDR   00B6H   A   
+IDA0CN . . . . . .  D ADDR   00B9H   A   
+IDA0H. . . . . . .  D ADDR   0097H   A   
+IDA0L. . . . . . .  D ADDR   0096H   A   
+A51 MACRO ASSEMBLER  F330_SUB                                                             01/21/2019 16:50:26 PAGE     8
+
+IE . . . . . . . .  D ADDR   00A8H   A   
+IE0. . . . . . . .  B ADDR   0088H.1 A   
+IE1. . . . . . . .  B ADDR   0088H.3 A   
+IP . . . . . . . .  D ADDR   00B8H   A   
+ISR_T0 . . . . . .  C ADDR   0000H   R   SEG=SUBROUTINES
+ISR_UART . . . . .  C ADDR   0081H   R   SEG=SUBROUTINES
+IT0. . . . . . . .  B ADDR   0088H.0 A   
+IT01CF . . . . . .  D ADDR   00E4H   A   
+IT1. . . . . . . .  B ADDR   0088H.2 A   
+MASTER . . . . . .  B ADDR   00C0H.7 A   
+MCE0 . . . . . . .  B ADDR   0098H.5 A   
+MODF . . . . . . .  B ADDR   00F8H.5 A   
+NEWLINE. . . . . .  C ADDR   003EH   R   SEG=SUBROUTINES
+NSSMD0 . . . . . .  B ADDR   00F8H.2 A   
+NSSMD1 . . . . . .  B ADDR   00F8H.3 A   
+OSCICL . . . . . .  D ADDR   00B3H   A   
+OSCICN . . . . . .  D ADDR   00B2H   A   
+OSCLCN . . . . . .  D ADDR   00E3H   A   
+OSCXCN . . . . . .  D ADDR   00B1H   A   
+OV . . . . . . . .  B ADDR   00D0H.2 A   
+P. . . . . . . . .  B ADDR   00D0H.0 A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P0MDIN . . . . . .  D ADDR   00F1H   A   
+P0MDOUT. . . . . .  D ADDR   00A4H   A   
+P0SKIP . . . . . .  D ADDR   00D4H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P1MDIN . . . . . .  D ADDR   00F2H   A   
+P1MDOUT. . . . . .  D ADDR   00A5H   A   
+P1SKIP . . . . . .  D ADDR   00D5H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+P2MDOUT. . . . . .  D ADDR   00A6H   A   
+PCA0CN . . . . . .  D ADDR   00D8H   A   
+PCA0CPH0 . . . . .  D ADDR   00FCH   A   
+PCA0CPH1 . . . . .  D ADDR   00EAH   A   
+PCA0CPH2 . . . . .  D ADDR   00ECH   A   
+PCA0CPL0 . . . . .  D ADDR   00FBH   A   
+PCA0CPL1 . . . . .  D ADDR   00E9H   A   
+PCA0CPL2 . . . . .  D ADDR   00EBH   A   
+PCA0CPM0 . . . . .  D ADDR   00DAH   A   
+PCA0CPM1 . . . . .  D ADDR   00DBH   A   
+PCA0CPM2 . . . . .  D ADDR   00DCH   A   
+PCA0H. . . . . . .  D ADDR   00FAH   A   
+PCA0L. . . . . . .  D ADDR   00F9H   A   
+PCA0MD . . . . . .  D ADDR   00D9H   A   
+PCON . . . . . . .  D ADDR   0087H   A   
+PS0. . . . . . . .  B ADDR   00B8H.4 A   
+PSCTL. . . . . . .  D ADDR   008FH   A   
+PSPI0. . . . . . .  B ADDR   00B8H.6 A   
+PSW. . . . . . . .  D ADDR   00D0H   A   
+PT0. . . . . . . .  B ADDR   00B8H.1 A   
+PT1. . . . . . . .  B ADDR   00B8H.3 A   
+PT2. . . . . . . .  B ADDR   00B8H.5 A   
+PX0. . . . . . . .  B ADDR   00B8H.0 A   
+PX1. . . . . . . .  B ADDR   00B8H.2 A   
+RB80 . . . . . . .  B ADDR   0098H.2 A   
+REF0CN . . . . . .  D ADDR   00D1H   A   
+REN0 . . . . . . .  B ADDR   0098H.4 A   
+RI0. . . . . . . .  B ADDR   0098H.0 A   
+RS0. . . . . . . .  B ADDR   00D0H.3 A   
+RS1. . . . . . . .  B ADDR   00D0H.4 A   
+RSTSRC . . . . . .  D ADDR   00EFH   A   
+RXOVRN . . . . . .  B ADDR   00F8H.4 A   
+S0MODE . . . . . .  B ADDR   0098H.7 A   
+SBUF0. . . . . . .  D ADDR   0099H   A   
+SCON0. . . . . . .  D ADDR   0098H   A   
+SI . . . . . . . .  B ADDR   00C0H.0 A   
+A51 MACRO ASSEMBLER  F330_SUB                                                             01/21/2019 16:50:26 PAGE     9
+
+SMB0CF . . . . . .  D ADDR   00C1H   A   
+SMB0CN . . . . . .  D ADDR   00C0H   A   
+SMB0DAT. . . . . .  D ADDR   00C2H   A   
+SP . . . . . . . .  D ADDR   0081H   A   
+SPI0CFG. . . . . .  D ADDR   00A1H   A   
+SPI0CKR. . . . . .  D ADDR   00A2H   A   
+SPI0CN . . . . . .  D ADDR   00F8H   A   
+SPI0DAT. . . . . .  D ADDR   00A3H   A   
+SPIEN. . . . . . .  B ADDR   00F8H.0 A   
+SPIF . . . . . . .  B ADDR   00F8H.7 A   
+STA. . . . . . . .  B ADDR   00C0H.5 A   
+STO. . . . . . . .  B ADDR   00C0H.4 A   
+SUBROUTINES. . . .  C SEG    008FH       REL=UNIT
+T2SPLIT. . . . . .  B ADDR   00C8H.3 A   
+T2XCLK . . . . . .  B ADDR   00C8H.0 A   
+TB80 . . . . . . .  B ADDR   0098H.3 A   
+TCON . . . . . . .  D ADDR   0088H   A   
+TF0. . . . . . . .  B ADDR   0088H.5 A   
+TF1. . . . . . . .  B ADDR   0088H.7 A   
+TF2CEN . . . . . .  B ADDR   00C8H.4 A   
+TF2H . . . . . . .  B ADDR   00C8H.7 A   
+TF2L . . . . . . .  B ADDR   00C8H.6 A   
+TF2LEN . . . . . .  B ADDR   00C8H.5 A   
+TH0. . . . . . . .  D ADDR   008CH   A   
+TH1. . . . . . . .  D ADDR   008DH   A   
+TI0. . . . . . . .  B ADDR   0098H.1 A   
+TL0. . . . . . . .  D ADDR   008AH   A   
+TL1. . . . . . . .  D ADDR   008BH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TMR2CN . . . . . .  D ADDR   00C8H   A   
+TMR2H. . . . . . .  D ADDR   00CDH   A   
+TMR2L. . . . . . .  D ADDR   00CCH   A   
+TMR2RLH. . . . . .  D ADDR   00CBH   A   
+TMR2RLL. . . . . .  D ADDR   00CAH   A   
+TMR3CN . . . . . .  D ADDR   0091H   A   
+TMR3H. . . . . . .  D ADDR   0095H   A   
+TMR3L. . . . . . .  D ADDR   0094H   A   
+TMR3RLH. . . . . .  D ADDR   0093H   A   
+TMR3RLL. . . . . .  D ADDR   0092H   A   
+TR0. . . . . . . .  B ADDR   0088H.4 A   
+TR1. . . . . . . .  B ADDR   0088H.6 A   
+TR2. . . . . . . .  B ADDR   00C8H.2 A   
+TXBMT. . . . . . .  B ADDR   00F8H.1 A   
+TXMODE . . . . . .  B ADDR   00C0H.6 A   
+UART . . . . . . .  C ADDR   0036H   R   SEG=SUBROUTINES
+VDM0CN . . . . . .  D ADDR   00FFH   A   
+WAIT . . . . . . .  C ADDR   003AH   R   SEG=SUBROUTINES
+WCOL . . . . . . .  B ADDR   00F8H.6 A   
+XBR0 . . . . . . .  D ADDR   00E1H   A   
+XBR1 . . . . . . .  D ADDR   00E2H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
