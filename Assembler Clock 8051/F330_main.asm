@@ -1,20 +1,16 @@
 ;-----------------------------------------------------------------------------
-; template_main.asm
+; main.asm
 ;-----------------------------------------------------------------------------
 ; HTBLA Steyr  -  Elektronik und Technische Informatik
 ;
-; Author:   Felix Hutsteiner
+; Author:   Lukas Heiligenbrunner
 ; Version:  1.0
-;
-; Changes:
-;      		17.3.2014	created
-;
 ;
 ; Target:         C8051F330 Silicon Labs
 ; Tool chain:     Keil µVision 4
 ;
 ; Program Description:
-;    		Base project for F330 interrupt application
+;    		This program is a clock written in assembler
 ;
 
 ;------------------------------------------------------------------------------
@@ -35,12 +31,12 @@ EXTRN	code (isr_UART)
 ;------------------------------------------------------------------------------
 	; Reset Vector
 	cseg AT 0
-	ljmp MAIN			; Jmp to the main routine
+	ljmp MAIN	; Jmp to the main routine
 
 	cseg AT 0x000B ; Timer 0 interrupt service vector
-	ljmp isr_T0 ; jump to the interrupt service routine
+	ljmp isr_T0 	; jump to the interrupt service routine
 
-	cseg AT 0x0023 ; UART interrupt servie vector
+	cseg AT 0x0023 	; UART interrupt servie vector
 	ljmp isr_UART
 
 ;------------------------------------------------------------------------------
@@ -49,7 +45,7 @@ EXTRN	code (isr_UART)
 ?STACK 		segment IDATA ; defining stack segment
 
 	rseg	?STACK
-	ds		10			; reserve 10 bytes for stack
+	ds		10	; reserve 10 bytes for stack
 
 
 ;------------------------------------------------------------------------------
@@ -76,18 +72,18 @@ MAIN		segment	CODE ; defining main segment
 	ORL TMOD,#0x01
 
 	MOV TH0,#HIGH(45119)
-	MOV TL0,#LOW(45119)				; set timer reload value (10ms)
+	MOV TL0,#LOW(45119)	; set timer reload value (10ms)
 
-	SETB ET0					//timer0 interrupt enabled
-	SETB TR0					; set Timer 0 run flag
-	SETB EA						; Enable all flag
+	SETB ET0		; enable timer 0
+	SETB TR0		; set Timer 0 run flag
+	SETB EA			; Enable all flag
 
-	CLR TR1 					; timer 1 run flag
+	CLR TR1 		; timer 1 run flag
 	ANL TMOD,#0x2f		; setting timer mode
-	MOV TH1,#0xfd			; Timer 1 High byte
+	MOV TH1,#0xfd		; Timer 1 High byte
 	MOV SCON0,#0x52		; set uart mode
-	SETB TR1					; start timer1
-	SETB ES0					; UART interrupt enabled
+	SETB TR1		; start timer1
+	SETB ES0		; UART interrupt enabled
 	jmp		$
 ;------------------------------------------------------------------------------
 ; End of file.
