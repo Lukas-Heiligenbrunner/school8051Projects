@@ -1,4 +1,4 @@
-BL51 BANKED LINKER/LOCATER V6.22                                                        01/22/2019  12:49:09  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22                                                        01/22/2019  12:59:48  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
@@ -38,17 +38,17 @@ LINK MAP OF MODULE:  Project_F330_interrupts (F330_MAIN)
                     0026H     07DAH                  *** GAP ***
             CODE    0800H     008CH     UNIT         ?C_C51STARTUP
             CODE    088CH     0064H     UNIT         ?PR?SERIELLE_EINGABE?F330_SUB
-            CODE    08F0H     004FH     UNIT         ?PR?TIMER?F330_SUB
-            CODE    093FH     0013H     UNIT         ?PR?TIMER_INIT?CONFIG
-            CODE    0952H     0012H     UNIT         ?PR?MAIN?F330_MAIN
-            CODE    0964H     0012H     UNIT         ?C?LIB_CODE
-            CODE    0976H     000FH     UNIT         ?PR?INIT_DEVICE?CONFIG
-            CODE    0985H     000DH     UNIT         ?C_INITSEG
-            CODE    0992H     000DH     UNIT         ?PR?PORT_IO_INIT?CONFIG
-            CODE    099FH     0008H     UNIT         ?PR?_SERIELLE_AUSGABE?F330_SUB
-            CODE    09A7H     0004H     UNIT         ?PR?UART_INIT?CONFIG
-            CODE    09ABH     0004H     UNIT         ?PR?OSCILLATOR_INIT?CONFIG
-            CODE    09AFH     0004H     UNIT         ?PR?INTERRUPTS_INIT?CONFIG
+            CODE    08F0H     0041H     UNIT         ?PR?TIMER?F330_SUB
+            CODE    0931H     0013H     UNIT         ?PR?TIMER_INIT?CONFIG
+            CODE    0944H     0012H     UNIT         ?PR?MAIN?F330_MAIN
+            CODE    0956H     0012H     UNIT         ?C?LIB_CODE
+            CODE    0968H     000FH     UNIT         ?PR?INIT_DEVICE?CONFIG
+            CODE    0977H     000DH     UNIT         ?C_INITSEG
+            CODE    0984H     000DH     UNIT         ?PR?PORT_IO_INIT?CONFIG
+            CODE    0991H     0008H     UNIT         ?PR?_SERIELLE_AUSGABE?F330_SUB
+            CODE    0999H     0004H     UNIT         ?PR?UART_INIT?CONFIG
+            CODE    099DH     0004H     UNIT         ?PR?OSCILLATOR_INIT?CONFIG
+            CODE    09A1H     0004H     UNIT         ?PR?INTERRUPTS_INIT?CONFIG
 
 
 
@@ -59,7 +59,7 @@ SEGMENT
   +--> CALLED SEGMENT
 ---------------------
 ?PR?SERIELLE_EINGABE?F330_SUB
-BL51 BANKED LINKER/LOCATER V6.22                                                      01/22/2019  12:49:09  PAGE 2
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/22/2019  12:59:48  PAGE 2
 
 
   +--> ?PR?_SERIELLE_AUSGABE?F330_SUB
@@ -91,22 +91,22 @@ SYMBOL TABLE OF MODULE:  Project_F330_interrupts (F330_MAIN)
   C:0000H         SYMBOL        _ICE_DUMMY_
   B:00A8H.7       PUBLIC        EA
   D:00D9H         PUBLIC        PCA0MD
-  C:0952H         PUBLIC        main
+  C:0944H         PUBLIC        main
   B:00A8H.4       PUBLIC        ES0
   B:00A8H.1       PUBLIC        ET0
   B:0098H.1       PUBLIC        TI0
   B:0088H.4       PUBLIC        TR0
   -------         PROC          MAIN
-  C:0952H         LINE#         49
-  C:0952H         LINE#         51
-  C:0955H         LINE#         52
-  C:0958H         LINE#         54
-  C:095AH         LINE#         55
-  C:095CH         LINE#         56
-  C:095EH         LINE#         57
-  C:0960H         LINE#         58
-  C:0962H         LINE#         61
-  C:0962H         LINE#         64
+  C:0944H         LINE#         49
+  C:0944H         LINE#         51
+  C:0947H         LINE#         52
+  C:094AH         LINE#         54
+  C:094CH         LINE#         55
+  C:094EH         LINE#         56
+  C:0950H         LINE#         57
+  C:0952H         LINE#         58
+  C:0954H         LINE#         61
+  C:0954H         LINE#         64
   -------         ENDPROC       MAIN
   -------         ENDMOD        F330_MAIN
 
@@ -119,7 +119,7 @@ SYMBOL TABLE OF MODULE:  Project_F330_interrupts (F330_MAIN)
   D:000CH         PUBLIC        max_lengh
   B:0098H.0       PUBLIC        RI0
   B:0098H.1       PUBLIC        TI0
-BL51 BANKED LINKER/LOCATER V6.22                                                      01/22/2019  12:49:09  PAGE 3
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/22/2019  12:59:48  PAGE 3
 
 
   D:000EH         PUBLIC        dutycycle
@@ -127,7 +127,7 @@ SYMBOL TABLE OF MODULE:  Project_F330_interrupts (F330_MAIN)
   D:0099H         PUBLIC        SBUF0
   C:088CH         PUBLIC        serielle_Eingabe
   D:0010H         PUBLIC        uart_in
-  C:099FH         PUBLIC        _serielle_Ausgabe
+  C:0991H         PUBLIC        _serielle_Ausgabe
   -------         PROC          SERIELLE_EINGABE
   C:088CH         LINE#         52
   C:08A9H         LINE#         53
@@ -141,111 +141,111 @@ SYMBOL TABLE OF MODULE:  Project_F330_interrupts (F330_MAIN)
   -------         ENDPROC       SERIELLE_EINGABE
   -------         PROC          _SERIELLE_AUSGABE
   D:0007H         SYMBOL        out
-  C:099FH         LINE#         64
-  C:099FH         LINE#         65
-  C:09A2H         LINE#         66
-  C:09A4H         LINE#         67
-  C:09A6H         LINE#         68
+  C:0991H         LINE#         64
+  C:0991H         LINE#         65
+  C:0994H         LINE#         66
+  C:0996H         LINE#         67
+  C:0998H         LINE#         68
   -------         ENDPROC       _SERIELLE_AUSGABE
   -------         PROC          TIMER
   C:08F0H         LINE#         72
-  C:08F9H         LINE#         73
-  C:090AH         LINE#         74
-  C:090CH         LINE#         75
-  C:0914H         LINE#         76
-  C:0920H         LINE#         77
-  C:0926H         LINE#         78
-  C:0928H         LINE#         79
-  C:092EH         LINE#         80
-  C:0930H         LINE#         81
-  C:0938H         LINE#         82
-  C:0938H         LINE#         83
+  C:08F4H         LINE#         73
+  C:08FEH         LINE#         74
+  C:0900H         LINE#         75
+  C:0908H         LINE#         76
+  C:0914H         LINE#         77
+  C:091AH         LINE#         78
+  C:091CH         LINE#         79
+  C:0922H         LINE#         80
+  C:0924H         LINE#         81
+  C:092CH         LINE#         82
+  C:092CH         LINE#         83
   -------         ENDPROC       TIMER
   -------         ENDMOD        F330_SUB
 
   -------         MODULE        CONFIG
   C:0000H         SYMBOL        _ICE_DUMMY_
   D:00A8H         PUBLIC        IE
-  C:0992H         PUBLIC        Port_IO_Init
-  C:09ABH         PUBLIC        Oscillator_Init
+  C:0984H         PUBLIC        Port_IO_Init
+  C:099DH         PUBLIC        Oscillator_Init
   D:00E1H         PUBLIC        XBR0
   D:00E2H         PUBLIC        XBR1
   D:00F2H         PUBLIC        P1MDIN
-  C:09A7H         PUBLIC        UART_Init
+  C:0999H         PUBLIC        UART_Init
   D:0089H         PUBLIC        TMOD
   D:0088H         PUBLIC        TCON
   D:00D5H         PUBLIC        P1SKIP
-  C:09AFH         PUBLIC        Interrupts_Init
+  C:09A1H         PUBLIC        Interrupts_Init
   D:00B2H         PUBLIC        OSCICN
-  C:0976H         PUBLIC        Init_Device
+  C:0968H         PUBLIC        Init_Device
   D:008CH         PUBLIC        TH0
-BL51 BANKED LINKER/LOCATER V6.22                                                      01/22/2019  12:49:09  PAGE 4
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/22/2019  12:59:48  PAGE 4
 
 
   D:008DH         PUBLIC        TH1
   D:008AH         PUBLIC        TL0
   D:0098H         PUBLIC        SCON0
   D:008EH         PUBLIC        CKCON
-  C:093FH         PUBLIC        Timer_Init
+  C:0931H         PUBLIC        Timer_Init
   -------         PROC          TIMER_INIT
-  C:093FH         LINE#         11
-  C:093FH         LINE#         12
-  C:093FH         LINE#         13
-  C:0942H         LINE#         14
-  C:0945H         LINE#         15
-  C:0948H         LINE#         17
-  C:094BH         LINE#         18
-  C:094EH         LINE#         20
-  C:0951H         LINE#         21
+  C:0931H         LINE#         11
+  C:0931H         LINE#         12
+  C:0931H         LINE#         13
+  C:0934H         LINE#         14
+  C:0937H         LINE#         15
+  C:093AH         LINE#         17
+  C:093DH         LINE#         18
+  C:0940H         LINE#         20
+  C:0943H         LINE#         21
   -------         ENDPROC       TIMER_INIT
   -------         PROC          UART_INIT
-  C:09A7H         LINE#         23
-  C:09A7H         LINE#         24
-  C:09A7H         LINE#         25
-  C:09AAH         LINE#         26
+  C:0999H         LINE#         23
+  C:0999H         LINE#         24
+  C:0999H         LINE#         25
+  C:099CH         LINE#         26
   -------         ENDPROC       UART_INIT
   -------         PROC          PORT_IO_INIT
-  C:0992H         LINE#         28
-  C:0992H         LINE#         29
-  C:0992H         LINE#         48
-  C:0995H         LINE#         49
-  C:0998H         LINE#         50
-  C:099BH         LINE#         51
-  C:099EH         LINE#         52
+  C:0984H         LINE#         28
+  C:0984H         LINE#         29
+  C:0984H         LINE#         48
+  C:0987H         LINE#         49
+  C:098AH         LINE#         50
+  C:098DH         LINE#         51
+  C:0990H         LINE#         52
   -------         ENDPROC       PORT_IO_INIT
   -------         PROC          OSCILLATOR_INIT
-  C:09ABH         LINE#         54
-  C:09ABH         LINE#         55
-  C:09ABH         LINE#         56
-  C:09AEH         LINE#         57
+  C:099DH         LINE#         54
+  C:099DH         LINE#         55
+  C:099DH         LINE#         56
+  C:09A0H         LINE#         57
   -------         ENDPROC       OSCILLATOR_INIT
   -------         PROC          INTERRUPTS_INIT
-  C:09AFH         LINE#         59
-  C:09AFH         LINE#         60
-  C:09AFH         LINE#         61
-  C:09B2H         LINE#         62
+  C:09A1H         LINE#         59
+  C:09A1H         LINE#         60
+  C:09A1H         LINE#         61
+  C:09A4H         LINE#         62
   -------         ENDPROC       INTERRUPTS_INIT
   -------         PROC          INIT_DEVICE
-  C:0976H         LINE#         66
-  C:0976H         LINE#         67
-  C:0976H         LINE#         68
-  C:0979H         LINE#         69
-  C:097CH         LINE#         70
-  C:097FH         LINE#         71
-  C:0982H         LINE#         72
+  C:0968H         LINE#         66
+  C:0968H         LINE#         67
+  C:0968H         LINE#         68
+  C:096BH         LINE#         69
+  C:096EH         LINE#         70
+  C:0971H         LINE#         71
+  C:0974H         LINE#         72
   -------         ENDPROC       INIT_DEVICE
   -------         ENDMOD        CONFIG
 
   -------         MODULE        ?C?IMUL
-  C:0964H         PUBLIC        ?C?IMUL
+  C:0956H         PUBLIC        ?C?IMUL
   -------         ENDMOD        ?C?IMUL
-BL51 BANKED LINKER/LOCATER V6.22                                                      01/22/2019  12:49:09  PAGE 5
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/22/2019  12:59:48  PAGE 5
 
 
 
 ******************************************************************************
-* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 011AH BYTE (13%) *
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 010CH BYTE (13%) *
 ******************************************************************************
 
-Program Size: data=18.0 xdata=0 code=444
+Program Size: data=18.0 xdata=0 code=430
 LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

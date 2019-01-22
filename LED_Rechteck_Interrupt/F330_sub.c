@@ -70,7 +70,7 @@ void serielle_Ausgabe (char out){
 
 int count;
 void  Timer (void) interrupt 1{
-	if(tempCycle<=count){
+	if(tempCycle==count){
 		led_pin = 1;
 		count++;
 	}else if(count==max_lengh){
