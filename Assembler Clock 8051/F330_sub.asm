@@ -3,18 +3,14 @@
 ;-----------------------------------------------------------------------------
 ; HTBLA Steyr  -  Elektronik und Technische Informatik
 ;
-; Author:   Felix Hutsteiner
+; Author:   Lukas Heiligenbrunner
 ; Version:  1.0
-;
-; Changes:
-;      		3.1.2014	created
-;
 ;
 ; Target:         C8051F330 Silicon Labs
 ; Tool chain:     Keil µVision 4
 ;
 ; Program Description:
-;    		This program is a template for assembler subroutine modules
+;    		This program is a clock written in assembler
 ;
 
 ;------------------------------------------------------------------------------
@@ -66,15 +62,15 @@ isr_T0:
 		INC R6 ;seconds
 		; print uart info every second
 
-		call printhours				; printing the hours
+		call printhours	; printing the hours
 		MOV A,#':'
 		call writeuart
 
-		call printminutes				; printing the minutes
+		call printminutes ; printing the minutes
 		MOV A,#':'
 		call writeuart
 
-		call printseconds				; printing the seconds
+		call printseconds 	; printing the seconds
 		call writenewLine	; printing carriage return new line feed
 
 
@@ -95,15 +91,15 @@ isr_T0:
 
 		done:
 
-		reti					; reti because of isr
-;----------------------------------
-		writeuart:					; function for writing A to uart
-		MOV SBUF0, A				; move a to sbuf0
-		clr TI0					 ; clr transmit interrupt flag
+		reti	; reti because of isr
+		;----------------------------------
+		writeuart:	; function for writing A to uart
+		MOV SBUF0, A	; move a to sbuf0
+		clr TI0		; clr transmit interrupt flag
 		JNB TI0, waituart
 		ret
 
-		writenewLine:				; function for printing new line
+		writenewLine:	; function for printing new line
 		MOV A, #13 ; carriage return
 		call writeuart
 
@@ -111,29 +107,29 @@ isr_T0:
 		call writeuart
 		ret
 
-		printseconds:					; printseconds
+		printseconds:	; printseconds
 		MOV A,R6
 		MOV B,#10
-		DIV AB				; divide A / B --> result in a and remain in B
-		ADD A,#0x30				; add 30 for beiing a ascii char
-		call writeuart		; call writing to uart
+		DIV AB		; divide A / B --> result in a and remain in B
+		ADD A,#0x30	; add 30 for beiing a ascii char
+		call writeuart	; call writing to uart
 		MOV A,B
 		ADD A,#0x30
-		call writeuart			; write second position to uart
+		call writeuart	; write second position to uart
 		ret
 
-		printminutes:					; printminutes
+		printminutes:	; printminutes
 		MOV A,R5
 		MOV B,#10
-		DIV AB					; divide A / B --> result in a and remain in B
-		ADD A,#0x30				; calc to ascii letter
-		call writeuart				; print 10th seconds to uart
+		DIV AB	; divide A / B --> result in a and remain in B
+		ADD A,#0x30	; calc to ascii letter
+		call writeuart	; print 10th seconds to uart
 		MOV A,B
 		ADD A,#0x30
 		call writeuart
 		ret
 
-		printhours:				;printhours --> same as above with hours
+		printhours:	;printhours --> same as above with hours
 		MOV A,R4
 		MOV B,#10
 		DIV AB
@@ -146,9 +142,9 @@ isr_T0:
 
 isr_UART:		; service routine for recognizing chars typed into the uart --> not complete!
 
-		JNB RI0, done ; jump to the end if interrupt was triggered by program print to uart
-		CLR RI0 ; clear interrupt bit
-		MOV A,SBUF0 ; move the char to the Accumulator
+		JNB RI0, done 	; jump to the end if interrupt was triggered by program print to uart
+		CLR RI0 	; clear interrupt bit
+		MOV A,SBUF0 	; move the char to the Accumulator
 
 		CJNE A,#'s', done ; only do something when typing s
 
