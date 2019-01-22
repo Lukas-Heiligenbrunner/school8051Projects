@@ -1,0 +1,204 @@
+C51 COMPILER V9.53.0.0   F330_SUB                                                          01/22/2019 17:00:49 PAGE 1   
+
+
+C51 COMPILER V9.53.0.0, COMPILATION OF MODULE F330_SUB
+OBJECT MODULE PLACED IN F330_sub.OBJ
+COMPILER INVOKED BY: C:\Program Files (x86)\Keil\C51\BIN\C51.EXE F330_sub.c OPTIMIZE(9,SPEED) BROWSE DEBUG OBJECTEXTEND 
+                    -TABS(2)
+
+line level    source
+
+   1          //-----------------------------------------------------------------------------
+   2          // template.c
+   3          //-----------------------------------------------------------------------------
+   4          // HTBLA Steyr  -  Elektronik und Technische Informatik
+   5          // 
+   6          // Author:   Felix Hutsteiner
+   7          // Version:  1.0
+   8          // 
+   9          // Changes:  
+  10          //          5.2.2014  created     
+  11          //
+  12          //
+  13          // Target:         C8051F330 Silabs
+  14          // Tool chain:     Keil µVision 4 
+  15          //
+  16          // Program Description:
+  17          //      This program is a template for c51 subfunction modules
+  18          //
+  19          
+  20          
+  21          //-----------------------------------------------------------------------------
+  22          // Includes
+  23          //-----------------------------------------------------------------------------
+  24          
+  25          #include <C8051F330.h>      // SFR declaration
+  26          #include <stdio.h>
+  27          
+  28          //-----------------------------------------------------------------------------
+  29          // Global Constants
+  30          //-----------------------------------------------------------------------------
+  31          #define PWM_period 100
+  32          
+  33          
+  34          
+  35          //-----------------------------------------------------------------------------
+  36          // Global Variables
+  37          //-----------------------------------------------------------------------------
+  38          
+  39          sbit motor_r = P0^0;      // 1: Motoranschluss für Rechtslauf an +UB, 0: ... Masse
+  40          sbit motor_l = P0^1;      // 1: Motoranschluss für Linkslauf an +UB, 0: ... Masse
+  41          sbit fb_inh = P1^2;       // 1: Motorbrücke aktiviert, 0: Motorbrücke gesperrt
+  42          
+  43          char uart_in;
+  44          
+  45          int setmenu = 0;
+  46          int currpercent = 0;
+  47          int temp = 0;
+  48          
+  49          int tempint = 0;
+  50          
+  51          
+  52          // Achtung: für Rechtslauf muss motor_l auf 0 sein, und umgekehrt !!!!!!!!!
+  53          
+  54          
+C51 COMPILER V9.53.0.0   F330_SUB                                                          01/22/2019 17:00:49 PAGE 2   
+
+  55          
+  56          //-----------------------------------------------------------------------------
+  57          // Function Prototypes
+  58          //-----------------------------------------------------------------------------
+  59          
+  60          void writeSerial(char out);
+  61          void  T0_interrupt (void);
+  62          void serial_interrupt (void);
+  63          void string_Print(char mystring[]);
+  64          void writeInt(int out);
+  65          
+  66          //-----------------------------------------------------------------------------
+  67          // Functions
+  68          //-----------------------------------------------------------------------------
+  69          
+  70          
+  71          void writeSerial (char out){
+  72   1        while(!TI0){}
+  73   1        SBUF0=out;
+  74   1        TI0=0;
+  75   1      }
+  76          
+  77          void writeInt(int out){
+  78   1        tempint = out;
+  79   1        while(tempint > 0){
+  80   2              tempint = tempint/10;
+  81   2          writeSerial((tempint%10) + '0');
+  82   2        }
+  83   1      }
+  84          
+  85          void string_Print(char  mystring[])
+  86          {
+  87   1        int i =0;
+  88   1        for(i=0;mystring[i] != 0 ;i++)
+  89   1        {
+  90   2          writeSerial(mystring[i]);
+  91   2        }
+  92   1      }
+  93          
+  94          void  T0_interrupt (void) interrupt 1 using 1 {
+  95   1        
+  96   1        if(temp <= currpercent)
+  97   1        {
+  98   2          //turn on motor
+  99   2        }else{
+ 100   2          
+ 101   2        }
+ 102   1        
+ 103   1        temp++;
+ 104   1      
+ 105   1      }
+ 106          
+ 107          void serial_interrupt (void) interrupt 4 using 1 {
+ 108   1        if(RI0){
+ 109   2          uart_in = SBUF0;
+ 110   2          RI0 = 0;
+ 111   2          //writeSerial(uart_in);
+ 112   2          if(setmenu == 1)
+ 113   2          {
+ 114   3            writeSerial(uart_in);
+ 115   3            if(currpercent == 0)
+ 116   3            {
+C51 COMPILER V9.53.0.0   F330_SUB                                                          01/22/2019 17:00:49 PAGE 3   
+
+ 117   4              currpercent = uart_in-30;
+ 118   4            }else if(currpercent/10 < 10)
+ 119   3            {
+ 120   4              currpercent += (uart_in-30)*10;
+ 121   4            }else{
+ 122   4              currpercent += (uart_in-30)*100;
+ 123   4            }
+ 124   3            writeInt(42);
+ 125   3            
+ 126   3            if(uart_in == 'c')
+ 127   3            {
+ 128   4              string_Print("exiting from menu\n");
+ 129   4              setmenu = 0;
+ 130   4            }
+ 131   3          }else{
+ 132   3            if(uart_in == 'l')
+ 133   3            {
+ 134   4              string_Print("links laufen\n");
+ 135   4              fb_inh = 1;
+ 136   4              motor_r = 0;
+ 137   4              motor_l = 1;
+ 138   4              
+ 139   4            }else if(uart_in == 'r')
+ 140   3            {
+ 141   4              string_Print("rechts laufen\n");
+ 142   4              
+ 143   4              fb_inh = 1;
+ 144   4              motor_l = 0;
+ 145   4              motor_r = 1;
+ 146   4            }else if(uart_in == 's')
+ 147   3            {
+ 148   4              string_Print("STOP Motor\n");
+ 149   4              fb_inh = 1;
+ 150   4              motor_r = 0;
+ 151   4              motor_l = 0;
+ 152   4            }else if(uart_in == 'p')
+ 153   3            {
+ 154   4              string_Print("Motor auslaufen lassen\n");
+ 155   4              fb_inh = 0;
+ 156   4              motor_r = 0;
+ 157   4              motor_l = 0;
+ 158   4            }else if(uart_in == 'd')
+ 159   3            {
+ 160   4              string_Print("You are in speed setup with c\nExit withPlease enter speed:\n");
+ 161   4              setmenu = 1;
+ 162   4            }
+ 163   3          }
+ 164   2          
+ 165   2          
+ 166   2          
+ 167   2          
+ 168   2        }
+ 169   1      }
+ 170          
+ 171          
+ 172          //-----------------------------------------------------------------------------
+ 173          // End Of File
+ 174          //-----------------------------------------------------------------------------
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    373    ----
+C51 COMPILER V9.53.0.0   F330_SUB                                                          01/22/2019 17:00:49 PAGE 4   
+
+   CONSTANT SIZE    =    144    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      9       3
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
