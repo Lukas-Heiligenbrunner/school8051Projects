@@ -1,11 +1,13 @@
-C51 COMPILER V9.53.0.0   F330_MAIN                                                         01/22/2019 12:59:48 PAGE 1   
+C51 COMPILER V9.53.0.0   F330_MAIN                                                         01/23/2019 07:54:47 PAGE 1   
 
 
 C51 COMPILER V9.53.0.0, COMPILATION OF MODULE F330_MAIN
 OBJECT MODULE PLACED IN F330_main.OBJ
-COMPILER INVOKED BY: C:\Program Files (x86)\Keil\C51\BIN\C51.EXE F330_main.c BROWSE DEBUG OBJECTEXTEND TABS(2)
+COMPILER INVOKED BY: E:\Keil_µVison_5\C51\BIN\C51.exe F330_main.c BROWSE DEBUG OBJECTEXTEND TABS(2)
 
 line level    source
+
+*** WARNING C500 IN LINE 1 OF F330_main.c: LICENSE ERROR (R207(3): REGISTRY READ ERROR)
 
    1          //-----------------------------------------------------------------------------
    2          // template.c
@@ -50,40 +52,46 @@ line level    source
   41          //extern void testfunction (void);
   42          extern void Init_Device();
   43          extern void serielle_Eingabe (void);
-  44          //-----------------------------------------------------------------------------
-  45          // main() Routine
+  44          extern void string_Print(char  mystring[]);
+  45          extern void writeInt(int out);
   46          //-----------------------------------------------------------------------------
-  47          
-  48          
-  49          void main (void) {
-  50   1      
-  51   1        PCA0MD &= 0xbf;         // Watchdogtimer abschalten
-  52   1        Init_Device();
-  53   1      
-  54   1        EA=1;                   //alle interrupts aktivieren
-  55   1        ET0=1;                  //enable Timer 0
-C51 COMPILER V9.53.0.0   F330_MAIN                                                         01/22/2019 12:59:48 PAGE 2   
+  47          // main() Routine
+  48          //-----------------------------------------------------------------------------
+  49          
+  50          
+  51          void main (void) {
+  52   1      
+  53   1        PCA0MD &= 0xbf;         // Watchdogtimer abschalten
+  54   1        Init_Device();
+C51 COMPILER V9.53.0.0   F330_MAIN                                                         01/23/2019 07:54:47 PAGE 2   
 
-  56   1        ES0=1;      
-  57   1        TR0=1;                  //TimerRunflag setzen um den Timer zu starten
-  58   1        TI0=1;                  //Timer Interrupt aktivieren
-  59   1        
-  60   1        
-  61   1        while (1) {
-  62   2          // main loop code
-  63   2          // wie im ASM das JMP $
-  64   2        }
-  65   1      }
-  66          
-  67          
-  68          //-----------------------------------------------------------------------------
-  69          // End Of File
-  70          //-----------------------------------------------------------------------------
+  55   1      
+  56   1        EA=1;                   //alle interrupts aktivieren
+  57   1        ET0=1;                  //enable Timer 0
+  58   1        ES0=1;      
+  59   1        TR0=1;                  //TimerRunflag setzen um den Timer zu starten
+  60   1        TI0=1;                  //Timer Interrupt aktivieren
+  61   1        
+  62   1        string_Print("Wilkommen beim programm vom luki\n [d] --> duty cycle setzen \n[f] --> pwm frequenz setzen\
+             -n");
+  63   1        
+  64   1        writeInt(1234);
+  65   1        
+  66   1        while (1) {
+  67   2          // main loop code
+  68   2          // wie im ASM das JMP $
+  69   2        }
+  70   1      }
+  71          
+  72          
+  73          //-----------------------------------------------------------------------------
+  74          // End Of File
+  75          //-----------------------------------------------------------------------------
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     18    ----
-   CONSTANT SIZE    =   ----    ----
+   CODE SIZE        =     34    ----
+   CONSTANT SIZE    =     90    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
@@ -92,4 +100,4 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
 END OF MODULE INFORMATION.
 
 
-C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)

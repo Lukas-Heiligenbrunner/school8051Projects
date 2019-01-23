@@ -3,16 +3,52 @@
 <pre>
 <h1>µVision Build Log</h1>
 <h2>Project:</h2>
-C:\Users\TEMP\Downloads\LED_Rechteck_Interrupt\Project_F330_interrupts.uvproj
-Project File Date:  01/22/2019
+E:\8051\school8051Projects\LED_Rechteck_Interrupt\Project_F330_interrupts.uvproj
+Project File Date:  01/23/2019
 
 <h2>Output:</h2>
 Rebuild target 'F330'
 compiling F330_main.c...
+F330_main.c(1): warning C500: LICENSE ERROR (R207(3): REGISTRY READ ERROR)
 compiling F330_sub.c...
+F330_sub.c(1): warning C500: LICENSE ERROR (R207(3): REGISTRY READ ERROR)
 compiling config.c...
+config.c(1): warning C500: LICENSE ERROR (R207(3): REGISTRY READ ERROR)
 linking...
-Program Size: data=18.0 xdata=0 code=430
-"Project_F330_interrupts" - 0 Error(s), 0 Warning(s).
-Error: Target DLL has been cancelled. Debugger aborted !
-Error: Target DLL has been cancelled. Debugger aborted !
+*** WARNING L15: MULTIPLE CALL TO SEGMENT
+    SEGMENT: ?PR?_STRING_PRINT?F330_SUB
+    CALLER1: ?PR?SERIELLE_EINGABE?F330_SUB
+    CALLER2: ?C_C51STARTUP
+Program Size: data=30.0 xdata=0 code=1020
+"Project_F330_interrupts" - 0 Error(s), 4 Warning(s).
+
+02: 'tempint': undefined identifier
+compiling config.c...
+config.c(1): warning C500: LICENSE ERROR (R207(3): REGISTRY READ ERROR)
+Target not created
+identifier
+F330_sub.c(53): error C202: 'RI0': undefined identifier
+F330_sub.c(54): error C202: 'SBUF0': undefined identifier
+F330_sub.c(55): error C202: 'RI0': undefined identifier
+F330_sub.c(65): error C202: 'TI0': undefined identifier
+F330_sub.c(66): error C202: 'SBUF0': undefined identifier
+F330_sub.c(67): error C202: 'TI0': undefined identifier
+F330_sub.c(74): error C202: 'led_pin': undefined identifier
+F330_sub.c(78): error C202: 'led_pin': undefined identifier
+compiling config.c...
+config.c(1): warning C500: LICENSE ERROR (R207(3): REGISTRY READ ERROR)
+config.c(7): warning C318: can't open file 'C8051F330.h'
+config.c(13): error C202: 'TCON': undefined identifier
+config.c(14): error C202: 'TMOD': undefined identifier
+config.c(15): error C202: 'CKCON': undefined identifier
+config.c(17): error C202: 'TL0': undefined identifier
+config.c(18): error C202: 'TH0': undefined identifier
+config.c(20): error C202: 'TH1': undefined identifier
+config.c(25): error C202: 'SCON0': undefined identifier
+config.c(48): error C202: 'P1MDIN': undefined identifier
+config.c(49): error C202: 'P1SKIP': undefined identifier
+config.c(50): error C202: 'XBR0': undefined identifier
+config.c(51): error C202: 'XBR1': undefined identifier
+config.c(56): error C202: 'OSCICN': undefined identifier
+config.c(61): error C202: 'IE': undefined identifier
+Target not created

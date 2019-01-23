@@ -1,11 +1,13 @@
-C51 COMPILER V9.53.0.0   F330_SUB                                                          01/22/2019 12:59:48 PAGE 1   
+C51 COMPILER V9.53.0.0   F330_SUB                                                          01/23/2019 07:54:47 PAGE 1   
 
 
 C51 COMPILER V9.53.0.0, COMPILATION OF MODULE F330_SUB
 OBJECT MODULE PLACED IN F330_sub.OBJ
-COMPILER INVOKED BY: C:\Program Files (x86)\Keil\C51\BIN\C51.EXE F330_sub.c BROWSE DEBUG OBJECTEXTEND TABS(2)
+COMPILER INVOKED BY: E:\Keil_µVison_5\C51\BIN\C51.exe F330_sub.c BROWSE DEBUG OBJECTEXTEND TABS(2)
 
 line level    source
+
+*** WARNING C500 IN LINE 1 OF F330_sub.c: LICENSE ERROR (R207(3): REGISTRY READ ERROR)
 
    1          //-----------------------------------------------------------------------------
    2          // template.c
@@ -48,64 +50,111 @@ line level    source
   39          // Function Prototypes
   40          //-----------------------------------------------------------------------------
   41          void  serielle_Eingabe (void);
-  42          void serielle_Ausgabe (char out);
-  43          //-----------------------------------------------------------------------------
-  44          // Functions
-  45          //-----------------------------------------------------------------------------
-  46          
-  47          char uart_in;                 //variable fuer das speichern des entgegengenommenen Char
-  48          sbit led_pin = P1^3;          //variable zum einschalten des Pins/LED
-  49          int max_lengh=100;            //laenge der Periode; 100 fuer 100%
-  50           
-  51          //Interrupt fuer die UART
-  52          void  serielle_Eingabe (void) interrupt 4{
-  53   1        if(RI0){
-  54   2          uart_in = SBUF0;
-  55   2          RI0 = 0;
-C51 COMPILER V9.53.0.0   F330_SUB                                                          01/22/2019 12:59:48 PAGE 2   
+  42          void writeSerial (char out);
+  43          void writeInt(int out);
+  44          void string_Print(char  mystring[]);
+  45          
+  46          //-----------------------------------------------------------------------------
+  47          // Functions
+  48          //-----------------------------------------------------------------------------
+  49          
+  50          char uart_in;                 //variable fuer das speichern des entgegengenommenen Char
+  51          sbit led_pin = P1^3;          //variable zum einschalten des Pins/LED
+  52          int max_lengh=100;            //laenge der Periode; 100 fuer 100%
+  53          
+  54          int tempint;
+C51 COMPILER V9.53.0.0   F330_SUB                                                          01/23/2019 07:54:47 PAGE 2   
 
-  56   2          
-  57   2          serielle_Ausgabe(uart_in);
-  58   2          
-  59   2          dutycycle=uart_in-'0';
-  60   2          dutycycle=dutycycle*10;
-  61   2        }
-  62   1      }
-  63          
-  64          void serielle_Ausgabe (char out){
-  65   1        while(!TI0){}
-  66   1        SBUF0=out;
-  67   1        TI0=0;
-  68   1      }
-  69          
-  70          
-  71          int count;
-  72          void  Timer (void) interrupt 1{
-  73   1        if(tempCycle==count){
-  74   2          led_pin = 1;
-  75   2          count++;
-  76   2        }else if(count==max_lengh){
-  77   2          tempCycle = dutycycle;
-  78   2          led_pin = 0;
-  79   2          count=0;
-  80   2        }else{
-  81   2        count++;
-  82   2        }
-  83   1      }
-  84          //-----------------------------------------------------------------------------
-  85          // End Of File
-  86          //-----------------------------------------------------------------------------
+  55          int stellennr;
+  56          
+  57          int setmenu = 0;
+  58           
+  59          //Interrupt fuer die UART
+  60          void  serielle_Eingabe (void) interrupt 4{
+  61   1        if(RI0){
+  62   2          uart_in = SBUF0;
+  63   2          RI0 = 0;
+  64   2          
+  65   2          writeSerial(uart_in);
+  66   2          if(setmenu == 1)
+  67   2          {
+  68   3            
+  69   3            
+  70   3            if(uart_in == 'c')
+  71   3            {
+  72   4              setmenu = 0;
+  73   4              string_Print("Exited cycle menu!\n\nMain menu:\n[d] --> duty cycle setzen \n[f] --> pwm frequenz setze
+             -n");
+  74   4            }
+  75   3            
+  76   3          }else
+  77   2          {
+  78   3            if(uart_in == 'd')
+  79   3            {
+  80   4              setmenu=1;
+  81   4              string_Print("You are in the duty cycle set menu! Exit with c \nplease set the cycle in %\n");
+  82   4            }
+  83   3          }
+  84   2          
+  85   2          dutycycle=uart_in-'0';
+  86   2          dutycycle=dutycycle*10;
+  87   2        }
+  88   1      }
+  89          
+  90          void writeSerial (char out){
+  91   1        while(!TI0){}
+  92   1        SBUF0=out;
+  93   1        TI0=0;
+  94   1      }
+  95          
+  96          void writeInt(int out){
+  97   1        tempint = out;
+  98   1        while(tempint > 0){
+  99   2              
+ 100   2          writeSerial((tempint%10) + '0');
+ 101   2          tempint = tempint/10;
+ 102   2        }
+ 103   1      }
+ 104          
+ 105          void string_Print(char  mystring[])
+ 106          {
+ 107   1        int i =0;
+ 108   1        for(i=0;mystring[i] != 0 ;i++)
+ 109   1        {
+ 110   2          writeSerial(mystring[i]);
+ 111   2        }
+ 112   1      }
+ 113          
+ 114          
+ 115          int count;
+C51 COMPILER V9.53.0.0   F330_SUB                                                          01/23/2019 07:54:47 PAGE 3   
+
+ 116          void  Timer (void) interrupt 1{
+ 117   1        if(tempCycle==count){
+ 118   2          led_pin = 1;
+ 119   2          count++;
+ 120   2        }else if(count==max_lengh){
+ 121   2          tempCycle = dutycycle;
+ 122   2          led_pin = 0;
+ 123   2          count=0;
+ 124   2        }else{
+ 125   2        count++;
+ 126   2        }
+ 127   1      }
+ 128          //-----------------------------------------------------------------------------
+ 129          // End Of File
+ 130          //-----------------------------------------------------------------------------
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    173    ----
-   CONSTANT SIZE    =   ----    ----
+   CODE SIZE        =    307    ----
+   CONSTANT SIZE    =    162    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =      9    ----
+   DATA SIZE        =     15       3
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.
 
 
-C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)

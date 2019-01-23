@@ -31,11 +31,11 @@
           <SLE66LinkerMisc></SLE66LinkerMisc>
           <SFDFile></SFDFile>
           <bCustSvd>0</bCustSvd>
-          <UseEnv>0</UseEnv>
-          <BinPath></BinPath>
-          <IncludePath></IncludePath>
-          <LibPath></LibPath>
-          <RegisterFilePath>Cygnal\</RegisterFilePath>
+          <UseEnv>1</UseEnv>
+          <BinPath>E:\Keil_µVison_5\C51\BIN\</BinPath>
+          <IncludePath>E:\Keil_µVison_5\C51\INC\SILABS\</IncludePath>
+          <LibPath>E:\Keil_µVison_5\C51\LIB\</LibPath>
+          <RegisterFilePath></RegisterFilePath>
           <DBRegisterFilePath>Cygnal\</DBRegisterFilePath>
           <TargetStatus>
             <Error>0</Error>
@@ -122,7 +122,7 @@
             <Oh166RecLen>16</Oh166RecLen>
           </OPTHX>
           <Simulator>
-            <UseSimulator>0</UseSimulator>
+            <UseSimulator>1</UseSimulator>
             <LoadApplicationAtStartup>1</LoadApplicationAtStartup>
             <RunToMain>1</RunToMain>
             <RestoreBreakpoints>1</RestoreBreakpoints>
@@ -134,7 +134,7 @@
             <RestoreSysVw>1</RestoreSysVw>
           </Simulator>
           <Target>
-            <UseTarget>1</UseTarget>
+            <UseTarget>0</UseTarget>
             <LoadApplicationAtStartup>1</LoadApplicationAtStartup>
             <RunToMain>0</RunToMain>
             <RestoreBreakpoints>1</RestoreBreakpoints>
