@@ -1,4 +1,4 @@
-C51 COMPILER V9.53.0.0   CONFIG                                                            01/23/2019 08:20:56 PAGE 1   
+C51 COMPILER V9.53.0.0   CONFIG                                                            01/23/2019 16:27:03 PAGE 1   
 
 
 C51 COMPILER V9.53.0.0, COMPILATION OF MODULE CONFIG
@@ -63,7 +63,7 @@ line level    source
   52   1      }
   53          
   54          void Oscillator_Init()
-C51 COMPILER V9.53.0.0   CONFIG                                                            01/23/2019 08:20:56 PAGE 2   
+C51 COMPILER V9.53.0.0   CONFIG                                                            01/23/2019 16:27:03 PAGE 2   
 
   55          {
   56   1          OSCICN    = 0x83; //ca. 24.5MHz

@@ -15,11 +15,24 @@ F330_sub.c(1): warning C500: LICENSE ERROR (R207(3): REGISTRY READ ERROR)
 compiling config.c...
 config.c(1): warning C500: LICENSE ERROR (R207(3): REGISTRY READ ERROR)
 linking...
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_WRITEINT?F330_SUB
 *** WARNING L15: MULTIPLE CALL TO SEGMENT
     SEGMENT: ?PR?_STRING_PRINT?F330_SUB
     CALLER1: ?PR?SERIELLE_EINGABE?F330_SUB
     CALLER2: ?C_C51STARTUP
-Program Size: data=30.0 xdata=0 code=1013
-"Project_F330_interrupts" - 0 Error(s), 5 Warning(s).
+Program Size: data=122.0 xdata=0 code=1338
+"Project_F330_interrupts" - 0 Error(s), 4 Warning(s).
+</pre>
+</body>
+</html>
+TMAINMENU
+    MODULE:  F330_main.obj (F330_MAIN)
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  MAINMENCHAR
+    SEGMENT: ?DT?F330_MAIN
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  PRINTMAINMENU
+    MODULE:  F330_main.obj (F330_MAIN)
+    ADDRESS: 0FE3H
+Program Size: data=187.1 xdata=0 code=2099
+Target not created
+rning(s).

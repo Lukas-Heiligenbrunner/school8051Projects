@@ -1,4 +1,4 @@
-C51 COMPILER V9.53.0.0   F330_MAIN                                                         01/23/2019 08:20:55 PAGE 1   
+C51 COMPILER V9.53.0.0   F330_MAIN                                                         01/23/2019 16:27:02 PAGE 1   
 
 
 C51 COMPILER V9.53.0.0, COMPILATION OF MODULE F330_MAIN
@@ -54,16 +54,16 @@ line level    source
   43          extern void serielle_Eingabe (void);
   44          extern void string_Print(char  mystring[]);
   45          extern void writeInt(int out);
-  46          //-----------------------------------------------------------------------------
-  47          // main() Routine
-  48          //-----------------------------------------------------------------------------
-  49          
+  46          extern void printMainMenu();
+  47          //-----------------------------------------------------------------------------
+  48          // main() Routine
+  49          //-----------------------------------------------------------------------------
   50          
   51          void main (void) {
   52   1      
   53   1        PCA0MD &= 0xbf;         // Watchdogtimer abschalten
   54   1        Init_Device();
-C51 COMPILER V9.53.0.0   F330_MAIN                                                         01/23/2019 08:20:55 PAGE 2   
+C51 COMPILER V9.53.0.0   F330_MAIN                                                         01/23/2019 16:27:02 PAGE 2   
 
   55   1      
   56   1        EA=1;                   //alle interrupts aktivieren
@@ -72,8 +72,7 @@ line level    source
   59   1        TR0=1;                  //TimerRunflag setzen um den Timer zu starten
   60   1        TI0=1;                  //Timer Interrupt aktivieren
   61   1        
-  62   1        string_Print("Wilkommen beim programm vom luki\n [d] --> duty cycle setzen \n[f] --> pwm frequenz setzen\
-             -n");
+  62   1        printMainMenu();
   63   1        
   64   1        while (1) {
   65   2          // main loop code
@@ -88,8 +87,8 @@ line level    source
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     27    ----
-   CONSTANT SIZE    =     90    ----
+   CODE SIZE        =     21    ----
+   CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----

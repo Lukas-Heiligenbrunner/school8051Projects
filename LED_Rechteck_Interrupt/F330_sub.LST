@@ -1,4 +1,4 @@
-C51 COMPILER V9.53.0.0   F330_SUB                                                          01/23/2019 08:20:56 PAGE 1   
+C51 COMPILER V9.53.0.0   F330_SUB                                                          01/23/2019 16:27:03 PAGE 1   
 
 
 C51 COMPILER V9.53.0.0, COMPILATION OF MODULE F330_SUB
@@ -43,115 +43,189 @@ line level    source
   32          //-----------------------------------------------------------------------------
   33          // Global Variables
   34          //-----------------------------------------------------------------------------
-  35          int dutycycle =50;
-  36          int tempCycle =50;
-  37          
+  35          
+  36          //-----------------------------------------------------------------------------
+  37          // Function Prototypes
   38          //-----------------------------------------------------------------------------
-  39          // Function Prototypes
-  40          //-----------------------------------------------------------------------------
-  41          void  serielle_Eingabe (void);
-  42          void writeSerial (char out);
-  43          void writeInt(int out);
-  44          void string_Print(char  mystring[]);
-  45          
-  46          //-----------------------------------------------------------------------------
-  47          // Functions
-  48          //-----------------------------------------------------------------------------
-  49          
-  50          char uart_in;                 //variable fuer das speichern des entgegengenommenen Char
-  51          sbit led_pin = P1^3;          //variable zum einschalten des Pins/LED
-  52          int max_lengh=100;            //laenge der Periode; 100 fuer 100%
-  53          
-  54          int tempint;
-C51 COMPILER V9.53.0.0   F330_SUB                                                          01/23/2019 08:20:56 PAGE 2   
+  39          void  serielle_Eingabe (void);
+  40          void writeSerial (char out);
+  41          void writeInt(int out);
+  42          void printMainMenu();
+  43          void string_Print(char  mystring[]);
+  44          
+  45          //-----------------------------------------------------------------------------
+  46          // Functions
+  47          //-----------------------------------------------------------------------------
+  48          
+  49          char uart_in;                 //variable fuer das speichern des entgegengenommenen Char
+  50          sbit led_pin = P1^3;          //variable zum einschalten des Pins/LED
+  51          int max_lengh=100;            //laenge der Periode; 100 fuer 100%
+  52          
+  53          int tempint;
+  54          int stellennr;
+C51 COMPILER V9.53.0.0   F330_SUB                                                          01/23/2019 16:27:03 PAGE 2   
 
-  55          int stellennr;
+  55          
   56          
-  57          int setmenu = 0;
-  58           
-  59          //Interrupt fuer die UART
-  60          void  serielle_Eingabe (void) interrupt 4{
-  61   1        if(RI0){
-  62   2          uart_in = SBUF0;
-  63   2          RI0 = 0;
-  64   2          
-  65   2          writeSerial(uart_in);
-  66   2          if(setmenu == 1)
-  67   2          {
-  68   3            
-  69   3            
-  70   3            if(uart_in == 'c')
-  71   3            {
-  72   4              setmenu = 0;
-  73   4              string_Print("Exited cycle menu!\n\nMain menu:\n[d] --> duty cycle setzen \n[f] --> pwm frequenz setze
-             -n");
-  74   4            }
-  75   3            
-  76   3          }else
-  77   2          {
-  78   3            if(uart_in == 'd')
-  79   3            {
-  80   4              setmenu=1;
-  81   4              string_Print("You are in the duty cycle set menu! Exit with c \nplease set the cycle in %\n");
-  82   4            }
-  83   3          }
-  84   2          
-  85   2          dutycycle=uart_in-'0';
-  86   2          dutycycle=dutycycle*10;
-  87   2        }
-  88   1      }
-  89          
-  90          void writeSerial (char out){
-  91   1        while(!TI0){}
-  92   1        SBUF0=out;
-  93   1        TI0=0;
-  94   1      }
-  95          
-  96          void writeInt(int out){
-  97   1        tempint = out;
-  98   1        while(tempint > 0){
-  99   2              
- 100   2          writeSerial((tempint%10) + '0');
- 101   2          tempint = tempint/10;
- 102   2        }
- 103   1      }
- 104          
- 105          void string_Print(char  mystring[])
- 106          {
- 107   1        int i =0;
- 108   1        for(i=0;mystring[i] != 0 ;i++)
- 109   1        {
- 110   2          writeSerial(mystring[i]);
- 111   2        }
- 112   1      }
- 113          
- 114          
- 115          int count;
-C51 COMPILER V9.53.0.0   F330_SUB                                                          01/23/2019 08:20:56 PAGE 3   
+  57          
+  58          int setmenu = 0;
+  59          int freqmenu = 0;
+  60          char percentchar[3];
+  61          int percent = 100;
+  62          
+  63          char tempintarr[9];
+  64          
+  65          char mainMenChar[80] = "\nMain menu:\n[d] --> duty cycle setzen \n[f] --> pwm frequenz setzen";
+  66          
+  67          //Interrupt fuer die UART
+  68          void  serielle_Eingabe (void) interrupt 4{
+  69   1        if(RI0){
+  70   2          uart_in = SBUF0;
+  71   2          RI0 = 0;
+  72   2          
+  73   2          writeSerial(uart_in);
+  74   2          if(setmenu == 1)
+  75   2          {
+  76   3            if(uart_in == 'c')
+  77   3            {
+  78   4              setmenu = 0;
+  79   4              string_Print("Exited cycle menu!\n");
+  80   4              printMainMenu();
+  81   4            }else if(uart_in == 13){
+  82   4            
+  83   4            percent=0;
+  84   4            if(percentchar[0] != 0 && percentchar[1] == 0 )
+  85   4            {
+  86   5              percent = percentchar[0]-'0';
+  87   5              writeSerial(percentchar[0]);
+  88   5            }else if(percentchar[0] != 0 && percentchar[1] != 0)
+  89   4            {
+  90   5              percent = (percentchar[0]-'0')*10+(percentchar[1]-'0');
+  91   5            }
+  92   4            percentchar[0]=0;
+  93   4            percentchar[1]=0;
+  94   4            percentchar[2]=0;
+  95   4            
+  96   4            string_Print("You selected: ");
+  97   4            writeInt(percent);
+  98   4            printMainMenu();
+  99   4            setmenu =0;
+ 100   4            
+ 101   4          }else {
+ 102   4              
+ 103   4              if(percentchar[0] == 0)
+ 104   4              {
+ 105   5                percentchar[0] = uart_in;
+ 106   5              } else if(percentchar[1] == 0){
+ 107   5                percentchar[1] = uart_in;
+ 108   5              } else{
+ 109   5                percentchar[2] = uart_in;
+ 110   5                percent = (percentchar[0]-'0')*100+(percentchar[1]-'0')*10+(percentchar[2]-'0');
+ 111   5                percentchar[0]=0;
+ 112   5                percentchar[1]=0;
+ 113   5                percentchar[2]=0;
+ 114   5                
+ 115   5                if(percent > 100)
+ 116   5                {
+C51 COMPILER V9.53.0.0   F330_SUB                                                          01/23/2019 16:27:03 PAGE 3   
 
- 116          void  Timer (void) interrupt 1{
- 117   1        if(tempCycle==count){
- 118   2          led_pin = 1;
- 119   2          count++;
- 120   2        }else if(count==max_lengh){
- 121   2          tempCycle = dutycycle;
- 122   2          led_pin = 0;
- 123   2          count=0;
- 124   2        }else{
- 125   2        count++;
- 126   2        }
- 127   1      }
- 128          //-----------------------------------------------------------------------------
- 129          // End Of File
- 130          //-----------------------------------------------------------------------------
+ 117   6                  percent = 100;
+ 118   6                }
+ 119   5                
+ 120   5                string_Print("You selected: ");
+ 121   5                writeInt(percent);
+ 122   5                printMainMenu();
+ 123   5                
+ 124   5                setmenu =0;
+ 125   5              }
+ 126   4            }
+ 127   3            
+ 128   3          }else if(freqmenu == 1){
+ 129   3            
+ 130   3            if(uart_in == 'c')
+ 131   3            {
+ 132   4              freqmenu = 0;
+ 133   4              string_Print("Exited cycle menu!\n");
+ 134   4              printMainMenu();
+ 135   4            }else if(uart_in == 13){
+ 136   4            string_Print("Exited cycle menu!\n");
+ 137   4            printMainMenu();
+ 138   4            freqmenu =0;
+ 139   4            
+ 140   4          }
+ 141   3          
+ 142   3          }else{
+ 143   3            if(uart_in == 'd')
+ 144   3            {
+ 145   4              setmenu=1;
+ 146   4              string_Print("\n Welcome to the duty cycle set menu: exit with c or set set in %\n:");
+ 147   4            }else if(uart_in == 'f')
+ 148   3            {
+ 149   4              freqmenu=1;
+ 150   4              string_Print("\n Welcome to the freqmenu menu: exit with c or set set in %\n:");
+ 151   4            }
+ 152   3          }
+ 153   2        }
+ 154   1      }
+ 155          
+ 156          void writeSerial (char out){
+ 157   1        while(!TI0){}
+ 158   1        SBUF0=out;
+ 159   1        TI0=0;
+ 160   1      }
+ 161          
+ 162          void printMainMenu()
+ 163          {
+ 164   1        string_Print(mainMenChar);
+ 165   1      }
+ 166          
+ 167          void writeInt(int out){ // todo to print right order
+ 168   1        tempint = out;
+ 169   1        if(tempint == 0)
+ 170   1        {
+ 171   2          writeSerial(0+ '0');
+ 172   2        }
+ 173   1        while(tempint > 0){
+ 174   2          writeSerial((tempint%10) + '0');
+ 175   2          tempint = tempint/10;
+ 176   2        }
+ 177   1      }
+ 178          
+C51 COMPILER V9.53.0.0   F330_SUB                                                          01/23/2019 16:27:03 PAGE 4   
+
+ 179          void string_Print(char  mystring[])
+ 180          {
+ 181   1        int i =0;
+ 182   1        for(i=0;mystring[i] != 0 ;i++)
+ 183   1        {
+ 184   2          writeSerial(mystring[i]);
+ 185   2        }
+ 186   1      }
+ 187          
+ 188          
+ 189          int count;
+ 190          void  Timer (void) interrupt 1{
+ 191   1        if(count < percent){
+ 192   2          led_pin = 1;
+ 193   2        }else if(count > percent){
+ 194   2          led_pin = 0;
+ 195   2        }
+ 196   1        count++;
+ 197   1        if(count > 100){
+ 198   2        count = 0;
+ 199   2        }
+ 200   1      }
+ 201          //-----------------------------------------------------------------------------
+ 202          // End Of File
+ 203          //-----------------------------------------------------------------------------
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    307    ----
-   CONSTANT SIZE    =    162    ----
+   CODE SIZE        =    642    ----
+   CONSTANT SIZE    =    165    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =     15       3
+   DATA SIZE        =    107       3
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.

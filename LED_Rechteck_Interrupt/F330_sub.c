@@ -32,8 +32,6 @@
 //-----------------------------------------------------------------------------
 // Global Variables
 //-----------------------------------------------------------------------------
-int dutycycle =50;
-int tempCycle =50;
 
 //-----------------------------------------------------------------------------
 // Function Prototypes
@@ -41,6 +39,7 @@ int tempCycle =50;
 void  serielle_Eingabe (void);
 void writeSerial (char out);
 void writeInt(int out);
+void printMainMenu();
 void string_Print(char  mystring[]);
 
 //-----------------------------------------------------------------------------
@@ -57,7 +56,13 @@ int stellennr;
 
 
 int setmenu = 0;
+int freqmenu = 0;
 char percentchar[3];
+int percent = 100;
+
+char tempintarr[9];
+
+char mainMenChar[80] = "\nMain menu:\n[d] --> duty cycle setzen \n[f] --> pwm frequenz setzen";
 
 //Interrupt fuer die UART
 void  serielle_Eingabe (void) interrupt 4{
@@ -68,31 +73,83 @@ void  serielle_Eingabe (void) interrupt 4{
 		writeSerial(uart_in);
 		if(setmenu == 1)
 		{
-			
-			
 			if(uart_in == 'c')
 			{
 				setmenu = 0;
-				string_Print("Exited cycle menu!\n\nMain menu:\n[d] --> duty cycle setzen \n[f] --> pwm frequenz setzen");
-			}else{
+				string_Print("Exited cycle menu!\n");
+				printMainMenu();
+			}else if(uart_in == 13){
+			
+			percent=0;
+			if(percentchar[0] != 0 && percentchar[1] == 0 )
+			{
+				percent = percentchar[0]-'0';
+				writeSerial(percentchar[0]);
+			}else if(percentchar[0] != 0 && percentchar[1] != 0)
+			{
+				percent = (percentchar[0]-'0')*10+(percentchar[1]-'0');
+			}
+			percentchar[0]=0;
+			percentchar[1]=0;
+			percentchar[2]=0;
+			
+			string_Print("You selected: ");
+			writeInt(percent);
+			printMainMenu();
+			setmenu =0;
+			
+		}else {
 				
 				if(percentchar[0] == 0)
 				{
 					percentchar[0] = uart_in;
+				} else if(percentchar[1] == 0){
+					percentchar[1] = uart_in;
+				} else{
+					percentchar[2] = uart_in;
+					percent = (percentchar[0]-'0')*100+(percentchar[1]-'0')*10+(percentchar[2]-'0');
+					percentchar[0]=0;
+					percentchar[1]=0;
+					percentchar[2]=0;
+					
+					if(percent > 100)
+					{
+						percent = 100;
+					}
+					
+					string_Print("You selected: ");
+					writeInt(percent);
+					printMainMenu();
+					
+					setmenu =0;
 				}
 			}
 			
-		}else
-		{
+		}else if(freqmenu == 1){ //todo frequency selection
+			
+			if(uart_in == 'c')
+			{
+				freqmenu = 0;
+				string_Print("Exited cycle menu!\n");
+				printMainMenu();
+			}else if(uart_in == 13){
+			string_Print("Exited cycle menu!\n");
+			printMainMenu();
+			freqmenu =0;
+			
+		}
+		
+		}else{
 			if(uart_in == 'd')
 			{
 				setmenu=1;
-				string_Print("You are in the duty cycle set menu! Exit with c \nplease set the cycle in %\n");
+				string_Print("\n Welcome to the duty cycle set menu: exit with c or set set in %\n:");
+			}else if(uart_in == 'f')
+			{
+				freqmenu=1;
+				string_Print("\n Welcome to the freqmenu menu: exit with c or set set in %\n:");
 			}
 		}
-		
-		dutycycle=uart_in-'0';
-		dutycycle=dutycycle*10;
 	}
 }
 
@@ -102,10 +159,18 @@ void writeSerial (char out){
 	TI0=0;
 }
 
-void writeInt(int out){
+void printMainMenu()
+{
+	string_Print(mainMenChar);
+}
+
+void writeInt(int out){ // todo to print right order
 	tempint = out;
+	if(tempint == 0)
+	{
+		writeSerial(0+ '0');
+	}
 	while(tempint > 0){
-				
 		writeSerial((tempint%10) + '0');
 		tempint = tempint/10;
 	}
@@ -123,15 +188,14 @@ void string_Print(char  mystring[])
 
 int count;
 void  Timer (void) interrupt 1{
-	if(tempCycle==count){
+	if(count < percent){
 		led_pin = 1;
-		count++;
-	}else if(count==max_lengh){
-		tempCycle = dutycycle;
+	}else if(count > percent){
 		led_pin = 0;
-		count=0;
-	}else{
+	}
 	count++;
+	if(count > 100){
+	count = 0;
 	}
 }
 //-----------------------------------------------------------------------------
