@@ -1,4 +1,4 @@
-BL51 BANKED LINKER/LOCATER V6.22                                                        01/23/2019  07:54:47  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22                                                        01/23/2019  08:20:56  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
@@ -47,19 +47,19 @@ LINK MAP OF MODULE:  Project_F330_interrupts (F330_MAIN)
             CODE    0AE5H     0041H     UNIT         ?PR?TIMER?F330_SUB
             CODE    0B26H     0033H     UNIT         ?PR?_WRITEINT?F330_SUB
             CODE    0B59H     0024H     UNIT         ?PR?_STRING_PRINT?F330_SUB
-            CODE    0B7DH     0022H     UNIT         ?PR?MAIN?F330_MAIN
-            CODE    0B9FH     0013H     UNIT         ?PR?TIMER_INIT?CONFIG
-            CODE    0BB2H     0011H     UNIT         ?C_INITSEG
-            CODE    0BC3H     000FH     UNIT         ?PR?INIT_DEVICE?CONFIG
-            CODE    0BD2H     000DH     UNIT         ?PR?PORT_IO_INIT?CONFIG
-            CODE    0BDFH     0008H     UNIT         ?PR?_WRITESERIAL?F330_SUB
-            CODE    0BE7H     0004H     UNIT         ?PR?UART_INIT?CONFIG
-            CODE    0BEBH     0004H     UNIT         ?PR?OSCILLATOR_INIT?CONFIG
-            CODE    0BEFH     0004H     UNIT         ?PR?INTERRUPTS_INIT?CONFIG
+            CODE    0B7DH     001BH     UNIT         ?PR?MAIN?F330_MAIN
+            CODE    0B98H     0013H     UNIT         ?PR?TIMER_INIT?CONFIG
+            CODE    0BABH     0011H     UNIT         ?C_INITSEG
+            CODE    0BBCH     000FH     UNIT         ?PR?INIT_DEVICE?CONFIG
+            CODE    0BCBH     000DH     UNIT         ?PR?PORT_IO_INIT?CONFIG
+            CODE    0BD8H     0008H     UNIT         ?PR?_WRITESERIAL?F330_SUB
+            CODE    0BE0H     0004H     UNIT         ?PR?UART_INIT?CONFIG
+            CODE    0BE4H     0004H     UNIT         ?PR?OSCILLATOR_INIT?CONFIG
+            CODE    0BE8H     0004H     UNIT         ?PR?INTERRUPTS_INIT?CONFIG
 
 
 
-BL51 BANKED LINKER/LOCATER V6.22                                                      01/23/2019  07:54:47  PAGE 2
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/23/2019  08:20:56  PAGE 2
 
 
 OVERLAY MAP OF MODULE:   Project_F330_interrupts (F330_MAIN)
@@ -86,7 +86,6 @@ SEGMENT                                 DATA_GROUP
   +--> ?PR?INIT_DEVICE?CONFIG
   +--> ?CO?F330_MAIN
   +--> ?PR?_STRING_PRINT?F330_SUB
-  +--> ?PR?_WRITEINT?F330_SUB
 
 ?PR?INIT_DEVICE?CONFIG                -----    -----
   +--> ?PR?TIMER_INIT?CONFIG
@@ -94,9 +93,6 @@ SEGMENT                                 DATA_GROUP
   +--> ?PR?PORT_IO_INIT?CONFIG
   +--> ?PR?OSCILLATOR_INIT?CONFIG
   +--> ?PR?INTERRUPTS_INIT?CONFIG
-
-?PR?_WRITEINT?F330_SUB                -----    -----
-  +--> ?PR?_WRITESERIAL?F330_SUB
 
 
 
@@ -119,17 +115,16 @@ SYMBOL TABLE OF MODULE:  Project_F330_interrupts (F330_MAIN)
   C:0B7DH         LINE#         53
   C:0B80H         LINE#         54
   C:0B83H         LINE#         56
-BL51 BANKED LINKER/LOCATER V6.22                                                      01/23/2019  07:54:47  PAGE 3
-
-
   C:0B85H         LINE#         57
   C:0B87H         LINE#         58
   C:0B89H         LINE#         59
   C:0B8BH         LINE#         60
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/23/2019  08:20:56  PAGE 3
+
+
   C:0B8DH         LINE#         62
   C:0B96H         LINE#         64
-  C:0B9DH         LINE#         66
-  C:0B9DH         LINE#         69
+  C:0B96H         LINE#         67
   -------         ENDPROC       MAIN
   -------         ENDMOD        F330_MAIN
 
@@ -140,7 +135,7 @@ SYMBOL TABLE OF MODULE:  Project_F330_interrupts (F330_MAIN)
   D:0008H         PUBLIC        setmenu
   D:000AH         PUBLIC        tempint
   C:0B59H         PUBLIC        _string_Print
-  C:0BDFH         PUBLIC        _writeSerial
+  C:0BD8H         PUBLIC        _writeSerial
   D:000CH         PUBLIC        count
   D:000EH         PUBLIC        tempCycle
   D:0010H         PUBLIC        max_lengh
@@ -179,16 +174,16 @@ SYMBOL TABLE OF MODULE:  Project_F330_interrupts (F330_MAIN)
   C:09E4H         LINE#         87
   C:09E4H         LINE#         88
   -------         ENDPROC       SERIELLE_EINGABE
-BL51 BANKED LINKER/LOCATER V6.22                                                      01/23/2019  07:54:47  PAGE 4
-
-
   -------         PROC          _WRITESERIAL
   D:0007H         SYMBOL        out
-  C:0BDFH         LINE#         90
-  C:0BDFH         LINE#         91
-  C:0BE2H         LINE#         92
-  C:0BE4H         LINE#         93
-  C:0BE6H         LINE#         94
+  C:0BD8H         LINE#         90
+  C:0BD8H         LINE#         91
+  C:0BDBH         LINE#         92
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/23/2019  08:20:56  PAGE 4
+
+
+  C:0BDDH         LINE#         93
+  C:0BDFH         LINE#         94
   -------         ENDPROC       _WRITESERIAL
   -------         PROC          _WRITEINT
   D:0006H         SYMBOL        out
@@ -233,80 +228,80 @@ SYMBOL TABLE OF MODULE:  Project_F330_interrupts (F330_MAIN)
   -------         MODULE        CONFIG
   C:0000H         SYMBOL        _ICE_DUMMY_
   D:00A8H         PUBLIC        IE
-  C:0BD2H         PUBLIC        Port_IO_Init
-  C:0BEBH         PUBLIC        Oscillator_Init
+  C:0BCBH         PUBLIC        Port_IO_Init
+  C:0BE4H         PUBLIC        Oscillator_Init
   D:00E1H         PUBLIC        XBR0
   D:00E2H         PUBLIC        XBR1
   D:00F2H         PUBLIC        P1MDIN
-  C:0BE7H         PUBLIC        UART_Init
-BL51 BANKED LINKER/LOCATER V6.22                                                      01/23/2019  07:54:47  PAGE 5
-
-
+  C:0BE0H         PUBLIC        UART_Init
   D:0089H         PUBLIC        TMOD
   D:0088H         PUBLIC        TCON
   D:00D5H         PUBLIC        P1SKIP
-  C:0BEFH         PUBLIC        Interrupts_Init
+  C:0BE8H         PUBLIC        Interrupts_Init
   D:00B2H         PUBLIC        OSCICN
-  C:0BC3H         PUBLIC        Init_Device
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/23/2019  08:20:56  PAGE 5
+
+
+  C:0BBCH         PUBLIC        Init_Device
   D:008CH         PUBLIC        TH0
   D:008DH         PUBLIC        TH1
   D:008AH         PUBLIC        TL0
   D:0098H         PUBLIC        SCON0
   D:008EH         PUBLIC        CKCON
-  C:0B9FH         PUBLIC        Timer_Init
+  C:0B98H         PUBLIC        Timer_Init
   -------         PROC          TIMER_INIT
-  C:0B9FH         LINE#         11
-  C:0B9FH         LINE#         12
-  C:0B9FH         LINE#         13
-  C:0BA2H         LINE#         14
-  C:0BA5H         LINE#         15
-  C:0BA8H         LINE#         17
-  C:0BABH         LINE#         18
-  C:0BAEH         LINE#         20
-  C:0BB1H         LINE#         21
+  C:0B98H         LINE#         11
+  C:0B98H         LINE#         12
+  C:0B98H         LINE#         13
+  C:0B9BH         LINE#         14
+  C:0B9EH         LINE#         15
+  C:0BA1H         LINE#         17
+  C:0BA4H         LINE#         18
+  C:0BA7H         LINE#         20
+  C:0BAAH         LINE#         21
   -------         ENDPROC       TIMER_INIT
   -------         PROC          UART_INIT
-  C:0BE7H         LINE#         23
-  C:0BE7H         LINE#         24
-  C:0BE7H         LINE#         25
-  C:0BEAH         LINE#         26
+  C:0BE0H         LINE#         23
+  C:0BE0H         LINE#         24
+  C:0BE0H         LINE#         25
+  C:0BE3H         LINE#         26
   -------         ENDPROC       UART_INIT
   -------         PROC          PORT_IO_INIT
-  C:0BD2H         LINE#         28
-  C:0BD2H         LINE#         29
-  C:0BD2H         LINE#         48
-  C:0BD5H         LINE#         49
-  C:0BD8H         LINE#         50
-  C:0BDBH         LINE#         51
-  C:0BDEH         LINE#         52
+  C:0BCBH         LINE#         28
+  C:0BCBH         LINE#         29
+  C:0BCBH         LINE#         48
+  C:0BCEH         LINE#         49
+  C:0BD1H         LINE#         50
+  C:0BD4H         LINE#         51
+  C:0BD7H         LINE#         52
   -------         ENDPROC       PORT_IO_INIT
   -------         PROC          OSCILLATOR_INIT
-  C:0BEBH         LINE#         54
-  C:0BEBH         LINE#         55
-  C:0BEBH         LINE#         56
-  C:0BEEH         LINE#         57
+  C:0BE4H         LINE#         54
+  C:0BE4H         LINE#         55
+  C:0BE4H         LINE#         56
+  C:0BE7H         LINE#         57
   -------         ENDPROC       OSCILLATOR_INIT
   -------         PROC          INTERRUPTS_INIT
-  C:0BEFH         LINE#         59
-  C:0BEFH         LINE#         60
-  C:0BEFH         LINE#         61
-  C:0BF2H         LINE#         62
+  C:0BE8H         LINE#         59
+  C:0BE8H         LINE#         60
+  C:0BE8H         LINE#         61
+  C:0BEBH         LINE#         62
   -------         ENDPROC       INTERRUPTS_INIT
   -------         PROC          INIT_DEVICE
-  C:0BC3H         LINE#         66
-  C:0BC3H         LINE#         67
-  C:0BC3H         LINE#         68
-  C:0BC6H         LINE#         69
-  C:0BC9H         LINE#         70
-  C:0BCCH         LINE#         71
-BL51 BANKED LINKER/LOCATER V6.22                                                      01/23/2019  07:54:47  PAGE 6
-
-
-  C:0BCFH         LINE#         72
+  C:0BBCH         LINE#         66
+  C:0BBCH         LINE#         67
+  C:0BBCH         LINE#         68
+  C:0BBFH         LINE#         69
+  C:0BC2H         LINE#         70
+  C:0BC5H         LINE#         71
+  C:0BC8H         LINE#         72
   -------         ENDPROC       INIT_DEVICE
   -------         ENDMOD        CONFIG
 
   -------         MODULE        ?C?CLDOPTR
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/23/2019  08:20:56  PAGE 6
+
+
   C:0800H         PUBLIC        ?C?CLDOPTR
   -------         ENDMOD        ?C?CLDOPTR
 
@@ -322,14 +317,17 @@ SYMBOL TABLE OF MODULE:  Project_F330_interrupts (F330_MAIN)
   C:0875H         PUBLIC        ?C?UIDIV
   -------         ENDMOD        ?C?UIDIV
 
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_WRITEINT?F330_SUB
+
 *** WARNING L15: MULTIPLE CALL TO SEGMENT
     SEGMENT: ?PR?_STRING_PRINT?F330_SUB
     CALLER1: ?PR?SERIELLE_EINGABE?F330_SUB
     CALLER2: ?C_C51STARTUP
 
 ******************************************************************************
-* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 02A2H BYTE (32%) *
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 029BH BYTE (32%) *
 ******************************************************************************
 
-Program Size: data=30.0 xdata=0 code=1020
-LINK/LOCATE RUN COMPLETE.  1 WARNING(S),  0 ERROR(S)
+Program Size: data=30.0 xdata=0 code=1013
+LINK/LOCATE RUN COMPLETE.  2 WARNING(S),  0 ERROR(S)

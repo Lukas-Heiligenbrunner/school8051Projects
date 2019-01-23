@@ -1,4 +1,4 @@
-C51 COMPILER V9.53.0.0   F330_SUB                                                          01/23/2019 07:54:47 PAGE 1   
+C51 COMPILER V9.53.0.0   F330_SUB                                                          01/23/2019 08:20:56 PAGE 1   
 
 
 C51 COMPILER V9.53.0.0, COMPILATION OF MODULE F330_SUB
@@ -63,7 +63,7 @@ line level    source
   52          int max_lengh=100;            //laenge der Periode; 100 fuer 100%
   53          
   54          int tempint;
-C51 COMPILER V9.53.0.0   F330_SUB                                                          01/23/2019 07:54:47 PAGE 2   
+C51 COMPILER V9.53.0.0   F330_SUB                                                          01/23/2019 08:20:56 PAGE 2   
 
   55          int stellennr;
   56          
@@ -127,7 +127,7 @@ line level    source
  113          
  114          
  115          int count;
-C51 COMPILER V9.53.0.0   F330_SUB                                                          01/23/2019 07:54:47 PAGE 3   
+C51 COMPILER V9.53.0.0   F330_SUB                                                          01/23/2019 08:20:56 PAGE 3   
 
  116          void  Timer (void) interrupt 1{
  117   1        if(tempCycle==count){

@@ -54,8 +54,11 @@ int max_lengh=100;						//laenge der Periode; 100 fuer 100%
 int tempint;
 int stellennr;
 
+
+
 int setmenu = 0;
- 
+char percentchar[3];
+
 //Interrupt fuer die UART
 void  serielle_Eingabe (void) interrupt 4{
 	if(RI0){
@@ -71,6 +74,12 @@ void  serielle_Eingabe (void) interrupt 4{
 			{
 				setmenu = 0;
 				string_Print("Exited cycle menu!\n\nMain menu:\n[d] --> duty cycle setzen \n[f] --> pwm frequenz setzen");
+			}else{
+				
+				if(percentchar[0] == 0)
+				{
+					percentchar[0] = uart_in;
+				}
 			}
 			
 		}else
