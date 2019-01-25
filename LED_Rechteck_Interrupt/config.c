@@ -11,13 +11,13 @@
 void Timer_Init()
 {
     TCON      = 0x40;
-    TMOD      = 0x21; //nicht loeschen (warum auch immer)
+    TMOD      = 0x21;
     CKCON     = 0x08;
-	//Timer 0
+
     TL0       = 0x2F;	
     TH0       = 0xB0;
-	//Timer 1 fuer die serielle Schnittstelle
-    TH1       = 0x96;	//nicht aendern (heikel) reloadwert
+
+    TH1       = 0x96;	//reload value for uart
 }
 
 void UART_Init()

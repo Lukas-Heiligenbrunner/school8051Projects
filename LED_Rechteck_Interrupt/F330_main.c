@@ -18,6 +18,13 @@
 //			This program is a template for c51 main modules
 //
 
+//Timerberechnung
+	//Oszillatorfrequenz = 24,5MHz
+	//24,5MHz / 12 = 2,04MHz
+	//2,04MHz ^= 490ns
+	//Zählschritte = 10ms / 490ns = 20416,66
+	//Reloadwert = 65536 - 20416,66 = 45119,33 ^= 0xB03F
+
 
 //-----------------------------------------------------------------------------
 // Includes
