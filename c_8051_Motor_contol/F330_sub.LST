@@ -1,4 +1,4 @@
-C51 COMPILER V9.53.0.0   F330_SUB                                                          01/22/2019 17:00:49 PAGE 1   
+C51 COMPILER V9.53.0.0   F330_SUB                                                          01/29/2019 14:45:09 PAGE 1   
 
 
 C51 COMPILER V9.53.0.0, COMPILATION OF MODULE F330_SUB
@@ -52,150 +52,214 @@ line level    source
   42          
   43          char uart_in;
   44          
-  45          int setmenu = 0;
-  46          int currpercent = 0;
-  47          int temp = 0;
-  48          
-  49          int tempint = 0;
+  45          char percentchar[3];
+  46          
+  47          int setmenu = 0;
+  48          int currpercent = 0;
+  49          int temp = 0;
   50          
   51          
-  52          // Achtung: für Rechtslauf muss motor_l auf 0 sein, und umgekehrt !!!!!!!!!
+  52          int tempint = 0;
   53          
-  54          
-C51 COMPILER V9.53.0.0   F330_SUB                                                          01/22/2019 17:00:49 PAGE 2   
+  54          int manual = 1;
+C51 COMPILER V9.53.0.0   F330_SUB                                                          01/29/2019 14:45:09 PAGE 2   
 
-  55          
-  56          //-----------------------------------------------------------------------------
-  57          // Function Prototypes
-  58          //-----------------------------------------------------------------------------
-  59          
-  60          void writeSerial(char out);
-  61          void  T0_interrupt (void);
-  62          void serial_interrupt (void);
-  63          void string_Print(char mystring[]);
-  64          void writeInt(int out);
-  65          
-  66          //-----------------------------------------------------------------------------
-  67          // Functions
-  68          //-----------------------------------------------------------------------------
-  69          
-  70          
-  71          void writeSerial (char out){
-  72   1        while(!TI0){}
-  73   1        SBUF0=out;
-  74   1        TI0=0;
-  75   1      }
+  55          int direction = 0; // 0 --> right 1 --> left
+  56          
+  57          
+  58          
+  59          // Achtung: für Rechtslauf muss motor_l auf 0 sein, und umgekehrt !!!!!!!!!
+  60          
+  61          
+  62          
+  63          //-----------------------------------------------------------------------------
+  64          // Function Prototypes
+  65          //-----------------------------------------------------------------------------
+  66          
+  67          void writeSerial(char out);
+  68          void  T0_interrupt (void);
+  69          void serial_interrupt (void);
+  70          void string_Print(char mystring[]);
+  71          void writeInt(int out);
+  72          
+  73          //-----------------------------------------------------------------------------
+  74          // Functions
+  75          //-----------------------------------------------------------------------------
   76          
-  77          void writeInt(int out){
-  78   1        tempint = out;
-  79   1        while(tempint > 0){
-  80   2              tempint = tempint/10;
-  81   2          writeSerial((tempint%10) + '0');
-  82   2        }
-  83   1      }
-  84          
-  85          void string_Print(char  mystring[])
-  86          {
-  87   1        int i =0;
-  88   1        for(i=0;mystring[i] != 0 ;i++)
-  89   1        {
-  90   2          writeSerial(mystring[i]);
-  91   2        }
-  92   1      }
-  93          
-  94          void  T0_interrupt (void) interrupt 1 using 1 {
-  95   1        
-  96   1        if(temp <= currpercent)
-  97   1        {
-  98   2          //turn on motor
-  99   2        }else{
- 100   2          
- 101   2        }
- 102   1        
- 103   1        temp++;
- 104   1      
- 105   1      }
- 106          
- 107          void serial_interrupt (void) interrupt 4 using 1 {
- 108   1        if(RI0){
- 109   2          uart_in = SBUF0;
- 110   2          RI0 = 0;
- 111   2          //writeSerial(uart_in);
- 112   2          if(setmenu == 1)
- 113   2          {
- 114   3            writeSerial(uart_in);
- 115   3            if(currpercent == 0)
- 116   3            {
-C51 COMPILER V9.53.0.0   F330_SUB                                                          01/22/2019 17:00:49 PAGE 3   
+  77          
+  78          void writeSerial (char out){
+  79   1        while(!TI0);
+  80   1        SBUF0=out;
+  81   1        TI0=0;
+  82   1      }
+  83          
+  84          void writeInt(int out){
+  85   1        tempint = out;
+  86   1        if(tempint == 0)
+  87   1        {
+  88   2          writeSerial(0+ '0');
+  89   2        }
+  90   1        while(tempint > 0){
+  91   2          writeSerial((tempint%10) + '0');
+  92   2          tempint = tempint/10;
+  93   2      }
+  94   1      }
+  95          
+  96          void string_Print(char  mystring[])
+  97          {
+  98   1        int i =0;
+  99   1        for(i=0;mystring[i] != 0 ;i++)
+ 100   1        {
+ 101   2          writeSerial(mystring[i]);
+ 102   2        }
+ 103   1      }
+ 104          
+ 105          void  T0_interrupt (void) interrupt 1 using 1 {
+ 106   1        if(manual == 0)
+ 107   1        {
+ 108   2          if(temp <= currpercent && temp != currpercent!=0)
+ 109   2          {
+ 110   3            if(!direction)
+ 111   3            {
+ 112   4              fb_inh = 1;
+ 113   4              motor_l = 0;
+ 114   4              motor_r = 1;
+ 115   4            }else{
+ 116   4              fb_inh = 1;
+C51 COMPILER V9.53.0.0   F330_SUB                                                          01/29/2019 14:45:09 PAGE 3   
 
- 117   4              currpercent = uart_in-30;
- 118   4            }else if(currpercent/10 < 10)
- 119   3            {
- 120   4              currpercent += (uart_in-30)*10;
- 121   4            }else{
- 122   4              currpercent += (uart_in-30)*100;
- 123   4            }
- 124   3            writeInt(42);
- 125   3            
- 126   3            if(uart_in == 'c')
- 127   3            {
- 128   4              string_Print("exiting from menu\n");
- 129   4              setmenu = 0;
- 130   4            }
- 131   3          }else{
- 132   3            if(uart_in == 'l')
- 133   3            {
- 134   4              string_Print("links laufen\n");
- 135   4              fb_inh = 1;
- 136   4              motor_r = 0;
- 137   4              motor_l = 1;
- 138   4              
- 139   4            }else if(uart_in == 'r')
- 140   3            {
- 141   4              string_Print("rechts laufen\n");
- 142   4              
- 143   4              fb_inh = 1;
- 144   4              motor_l = 0;
- 145   4              motor_r = 1;
- 146   4            }else if(uart_in == 's')
+ 117   4              motor_r = 0;
+ 118   4              motor_l = 1;
+ 119   4            }
+ 120   3          }else{
+ 121   3                fb_inh = 0;
+ 122   3                motor_r = 0;
+ 123   3                motor_l = 0;
+ 124   3          }
+ 125   2        }
+ 126   1      
+ 127   1        if(temp >= 100)
+ 128   1        {
+ 129   2          temp=0;
+ 130   2        }else{
+ 131   2          temp++;
+ 132   2        }
+ 133   1      }
+ 134          
+ 135          void serial_interrupt (void) interrupt 4 using 1 {
+ 136   1        if(RI0){
+ 137   2          uart_in = SBUF0;
+ 138   2          RI0 = 0;
+ 139   2          //writeSerial(uart_in);
+ 140   2          if(setmenu == 1)
+ 141   2          {
+ 142   3            writeSerial(uart_in);
+ 143   3      
+ 144   3            
+ 145   3              
+ 146   3            if(uart_in == 'c')
  147   3            {
- 148   4              string_Print("STOP Motor\n");
- 149   4              fb_inh = 1;
- 150   4              motor_r = 0;
- 151   4              motor_l = 0;
- 152   4            }else if(uart_in == 'p')
- 153   3            {
- 154   4              string_Print("Motor auslaufen lassen\n");
- 155   4              fb_inh = 0;
- 156   4              motor_r = 0;
- 157   4              motor_l = 0;
- 158   4            }else if(uart_in == 'd')
- 159   3            {
- 160   4              string_Print("You are in speed setup with c\nExit withPlease enter speed:\n");
- 161   4              setmenu = 1;
- 162   4            }
- 163   3          }
- 164   2          
- 165   2          
- 166   2          
- 167   2          
- 168   2        }
- 169   1      }
- 170          
- 171          
- 172          //-----------------------------------------------------------------------------
- 173          // End Of File
- 174          //-----------------------------------------------------------------------------
+ 148   4              string_Print("exiting from menu\n");
+ 149   4              string_Print("[l] --> links laufen 100%\n[r] --> rechts laufen 100% \n[p] --> auslaufen lassen\n[s] --
+             -> hart stoppen\n[d] --> duty cicle optionen");
+ 150   4              setmenu = 0;
+ 151   4            }else if(uart_in == 'a'){
+ 152   4                string_Print("set to auto mode...\n");
+ 153   4                manual = 0;
+ 154   4            }else if(uart_in == 'r'){
+ 155   4                string_Print("running right...\n");
+ 156   4                direction = 0;
+ 157   4            }else if(uart_in == 'l'){
+ 158   4                string_Print("running left...\n");
+ 159   4                direction = 1;
+ 160   4            }else{
+ 161   4              if(percentchar[0] == 0)
+ 162   4              {
+ 163   5                percentchar[0] = uart_in;
+ 164   5              } else if(percentchar[1] == 0){
+ 165   5                percentchar[1] = uart_in;
+ 166   5              } else{
+ 167   5                percentchar[2] = uart_in;
+ 168   5                currpercent = (percentchar[0]-'0')*100+(percentchar[1]-'0')*10+(percentchar[2]-'0');
+ 169   5                percentchar[0]=0;
+ 170   5                percentchar[1]=0;
+ 171   5                percentchar[2]=0;
+ 172   5                
+ 173   5                if(currpercent > 100)
+ 174   5                {
+ 175   6                  currpercent = 100;
+ 176   6                }
+ 177   5                
+C51 COMPILER V9.53.0.0   F330_SUB                                                          01/29/2019 14:45:09 PAGE 4   
+
+ 178   5                string_Print("You selected: ");
+ 179   5                writeInt(currpercent);
+ 180   5      
+ 181   5                
+ 182   5            }
+ 183   4            }
+ 184   3          }else{
+ 185   3            if(uart_in == 'l')
+ 186   3            {
+ 187   4              string_Print("links laufen\n");
+ 188   4              manual =1;
+ 189   4              
+ 190   4              fb_inh = 1;
+ 191   4              motor_r = 0;
+ 192   4              motor_l = 1;
+ 193   4              
+ 194   4            }else if(uart_in == 'r')
+ 195   3            {
+ 196   4              string_Print("rechts laufen\n");
+ 197   4              manual =1;
+ 198   4              
+ 199   4              fb_inh = 1;
+ 200   4              motor_l = 0;
+ 201   4              motor_r = 1;
+ 202   4            }else if(uart_in == 's')
+ 203   3            {
+ 204   4              string_Print("STOP Motor\n");
+ 205   4              manual =1;
+ 206   4              
+ 207   4              fb_inh = 1;
+ 208   4              motor_r = 0;
+ 209   4              motor_l = 0;
+ 210   4            }else if(uart_in == 'p')
+ 211   3            {
+ 212   4              string_Print("Motor auslaufen lassen\n");
+ 213   4              manual =1;
+ 214   4              
+ 215   4              fb_inh = 0;
+ 216   4              motor_r = 0;
+ 217   4              motor_l = 0;
+ 218   4            }else if(uart_in == 'd')
+ 219   3            {
+ 220   4              string_Print("\nYou are in speed setup \n[c]--> Exit \n[a] --> enable automatic mode \n[r] --> rotate 
+             -right\n[l] -->rotate left\nPlease enter speed:\n");
+ 221   4              setmenu = 1;
+ 222   4            }
+ 223   3          }
+ 224   2          
+ 225   2          
+ 226   2          
+ 227   2          
+ 228   2        }
+ 229   1      }
+ 230          
+ 231          
+ 232          //-----------------------------------------------------------------------------
+ 233          // End Of File
+ 234          //-----------------------------------------------------------------------------
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    373    ----
-C51 COMPILER V9.53.0.0   F330_SUB                                                          01/22/2019 17:00:49 PAGE 4   
+   CODE SIZE        =    629    ----
+C51 COMPILER V9.53.0.0   F330_SUB                                                          01/29/2019 14:45:09 PAGE 5   
 
-   CONSTANT SIZE    =    144    ----
+   CONSTANT SIZE    =    413    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =      9       3
+   DATA SIZE        =     16       3
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.

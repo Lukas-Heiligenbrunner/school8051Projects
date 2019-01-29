@@ -128,7 +128,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGDCYG</Key>
-          <Name>(98=938,305,1306,592,1)(5097=-1,-1,-1,-1,0)(5098=1249,11,1480,199,1)(5099=1411,12,1642,200,1)(3007=-1,-1,-1,-1,0)(99=-1,-1,-1,-1,0)(91=1221,221,1421,515,1)(92=-1,-1,-1,-1,0)(5104=-1,-1,-1,-1,0)(5103=-1,-1,-1,-1,0)(95=-1,-1,-1,-1,0)(100=-1,-1,-1,-1,0)(5108=-1,-1,-1,-1,0)(5105=-1,-1,-1,-1,0)(5107=-1,-1,-1,-1,0)(5106=-1,-1,-1,-1,0)(5061=-1,-1,-1,-1,0)(5102=1292,213,1561,851,1)(5095=-1,-1,-1,-1,0)</Name>
+          <Name>(98=938,305,1306,592,1)(5097=-1,-1,-1,-1,0)(5098=1249,11,1480,199,1)(5099=1411,12,1642,200,1)(3007=-1,-1,-1,-1,0)(99=-1,-1,-1,-1,0)(91=1221,221,1421,515,1)(92=-1,-1,-1,-1,0)(5104=-1,-1,-1,-1,0)(5103=-1,-1,-1,-1,0)(95=-1,-1,-1,-1,0)(100=-1,-1,-1,-1,0)(5108=-1,-1,-1,-1,0)(5105=-1,-1,-1,-1,0)(5107=-1,-1,-1,-1,0)(5106=-1,-1,-1,-1,0)(5061=-1,-1,-1,-1,0)(5102=1228,155,1497,793,1)(5095=-1,-1,-1,-1,0)</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -141,24 +141,7 @@
           <Name>-S1 -B115200 -O1793 -J0 -K0 -L0 -M0 -A3 -P1 -T1 -UTS0018852E</Name>
         </SetRegEntry>
       </TargetDriverDllRegistry>
-      <Breakpoint>
-        <Bp>
-          <Number>0</Number>
-          <Type>0</Type>
-          <LineNumber>77</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>-16776361</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>F330_sub.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression></Expression>
-        </Bp>
-      </Breakpoint>
+      <Breakpoint/>
       <WatchWindow1>
         <Ww>
           <count>0</count>

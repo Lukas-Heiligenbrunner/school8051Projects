@@ -42,11 +42,18 @@ sbit fb_inh = P1^2;				// 1: Motorbrücke aktiviert, 0: Motorbrücke gesperrt
 
 char uart_in;
 
+char percentchar[3];
+
 int setmenu = 0;
 int currpercent = 0;
 int temp = 0;
 
+
 int tempint = 0;
+
+int manual = 1;
+int direction = 0; // 0 --> right 1 --> left
+
 
 
 // Achtung: für Rechtslauf muss motor_l auf 0 sein, und umgekehrt !!!!!!!!!
@@ -69,17 +76,21 @@ void writeInt(int out);
 
 
 void writeSerial (char out){
-	while(!TI0){}
+	while(!TI0);
 	SBUF0=out;
 	TI0=0;
 }
 
 void writeInt(int out){
 	tempint = out;
-	while(tempint > 0){
-				tempint = tempint/10;
-		writeSerial((tempint%10) + '0');
+	if(tempint == 0)
+	{
+		writeSerial(0+ '0');
 	}
+	while(tempint > 0){
+		writeSerial((tempint%10) + '0');
+		tempint = tempint/10;
+}
 }
 
 void string_Print(char  mystring[])
@@ -92,16 +103,33 @@ void string_Print(char  mystring[])
 }
 
 void  T0_interrupt (void) interrupt 1 using 1 {
-	
-	if(temp <= currpercent)
+	if(manual == 0)
 	{
-		//turn on motor
-	}else{
-		
+		if(temp <= currpercent && temp != currpercent!=0)
+		{
+			if(!direction)
+			{
+				fb_inh = 1;
+				motor_l = 0;
+				motor_r = 1;
+			}else{
+				fb_inh = 1;
+				motor_r = 0;
+				motor_l = 1;
+			}
+		}else{
+					fb_inh = 0;
+					motor_r = 0;
+					motor_l = 0;
+		}
 	}
-	
-	temp++;
 
+	if(temp >= 100)
+	{
+		temp=0;
+	}else{
+		temp++;
+	}
 }
 
 void serial_interrupt (void) interrupt 4 using 1 {
@@ -112,26 +140,53 @@ void serial_interrupt (void) interrupt 4 using 1 {
 		if(setmenu == 1)
 		{
 			writeSerial(uart_in);
-			if(currpercent == 0)
-			{
-				currpercent = uart_in-30;
-			}else if(currpercent/10 < 10)
-			{
-				currpercent += (uart_in-30)*10;
-			}else{
-				currpercent += (uart_in-30)*100;
-			}
-			writeInt(42);
+
 			
+				
 			if(uart_in == 'c')
 			{
 				string_Print("exiting from menu\n");
+				string_Print("[l] --> links laufen 100%\n[r] --> rechts laufen 100% \n[p] --> auslaufen lassen\n[s] --> hart stoppen\n[d] --> duty cicle optionen");
 				setmenu = 0;
+			}else if(uart_in == 'a'){
+					string_Print("set to auto mode...\n");
+					manual = 0;
+			}else if(uart_in == 'r'){
+					string_Print("running right...\n");
+				  direction = 0;
+			}else if(uart_in == 'l'){
+					string_Print("running left...\n");
+				  direction = 1;
+			}else{
+				if(percentchar[0] == 0)
+				{
+					percentchar[0] = uart_in;
+				} else if(percentchar[1] == 0){
+					percentchar[1] = uart_in;
+				} else{
+					percentchar[2] = uart_in;
+					currpercent = (percentchar[0]-'0')*100+(percentchar[1]-'0')*10+(percentchar[2]-'0');
+					percentchar[0]=0;
+					percentchar[1]=0;
+					percentchar[2]=0;
+					
+					if(currpercent > 100)
+					{
+						currpercent = 100;
+					}
+					
+					string_Print("You selected: ");
+					writeInt(currpercent);
+
+					
+			}
 			}
 		}else{
 			if(uart_in == 'l')
 			{
 				string_Print("links laufen\n");
+				manual =1;
+				
 				fb_inh = 1;
 				motor_r = 0;
 				motor_l = 1;
@@ -139,6 +194,7 @@ void serial_interrupt (void) interrupt 4 using 1 {
 			}else if(uart_in == 'r')
 			{
 				string_Print("rechts laufen\n");
+				manual =1;
 				
 				fb_inh = 1;
 				motor_l = 0;
@@ -146,18 +202,22 @@ void serial_interrupt (void) interrupt 4 using 1 {
 			}else if(uart_in == 's')
 			{
 				string_Print("STOP Motor\n");
+				manual =1;
+				
 				fb_inh = 1;
 				motor_r = 0;
 				motor_l = 0;
 			}else if(uart_in == 'p')
 			{
 				string_Print("Motor auslaufen lassen\n");
+				manual =1;
+				
 				fb_inh = 0;
 				motor_r = 0;
 				motor_l = 0;
 			}else if(uart_in == 'd')
 			{
-				string_Print("You are in speed setup with c\nExit withPlease enter speed:\n");
+				string_Print("\nYou are in speed setup \n[c]--> Exit \n[a] --> enable automatic mode \n[r] --> rotate right\n[l] -->rotate left\nPlease enter speed:\n");
 				setmenu = 1;
 			}
 		}

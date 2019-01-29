@@ -52,7 +52,6 @@ extern void writeSerial(char out);
 extern void string_Print(char mystring[]);
 
 
-char welcome[58] = "Wilkommen beim Motorsteuerungsprogramm von Rene und Luki\n";
 
 //-----------------------------------------------------------------------------
 // main() Routine
@@ -75,7 +74,7 @@ void main (void) small {
 	//motor_r = 1;
 	//motor_l = 0;
 	
-	string_Print(welcome);
+	string_Print("[l] --> links laufen 100%\n[r] --> rechts laufen 100% \n[p] --> auslaufen lassen\n[s] --> hart stoppen\n[d] --> duty cicle optionen");
 	
 	while (1) {
 		// main loop code
